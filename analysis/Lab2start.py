@@ -620,6 +620,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import accuracy_score , classification_report, log_loss
 from sklearn.svm import LinearSVC, SVC
+from sklearn.neighbors import KNeighborsClassifier
 
 
 #%%
@@ -946,8 +947,35 @@ print("Intercept: ", model1.intercept_)
 #  We made several attempts at being able to identify the support vectors for our
 #  project but sadly we came up short.  We were able to generate the model, but
 #  unable to retrieve them from the SVM we tried to use.
+# 
+
+# TODO - Not sure what to do about the data preparation sections.  We've already got it above, but will Ben care!?  Unknown
+
+#%% [markdown]
+#  ## Section 4: Modeling and Evaluation 
+#  ### Section 3a: KNN Model
+#  
+#  We'll put something useful here when the words are needed. 
+# 
+
+#%% 
+
+
+KNNScore = []
+
+for i in range(1,20):
+    knn = KNeighborsClassifier(n_neighbors=i)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    KNNScore.append(accuracy_score(y_test, y_pred))
+
+sns.lineplot(range(1,20), KNNScore)
+plt.xlabel('Value of K for KNN')
+plt.ylabel('Accuracy')
+plt.title('Accuracy as K increases')
+plt.grid(True)
+plt.show()
+
+
 
 #%%
-
-
-
