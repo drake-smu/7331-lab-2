@@ -960,6 +960,7 @@ print("Intercept: ", model1.intercept_)
 
 #%% 
 
+# TODO - MIght need to recheck the x-train and y-train.  I just used what was modified earlier because it looked like it fit. 
 
 KNNScore = []
 
