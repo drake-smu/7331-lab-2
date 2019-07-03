@@ -119,7 +119,7 @@ from sklearn import metrics
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 #%%
-
+## This gives you the name of the features that are important according to the RFC
 feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
 top_feat = feature_imp.nlargest(n=8)
 
