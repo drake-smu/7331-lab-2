@@ -1010,3 +1010,18 @@ print("params",gres.best_params_)
 
 clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
+
+# %% [markdown]
+# ### xgBoost
+
+# %%
+from xgboost import XGBClassifier
+
+model = XGBClassifier()
+model.fit(X_train, y_train)
+# make predictions for test data
+y_pred = model.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
