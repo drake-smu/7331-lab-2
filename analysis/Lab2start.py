@@ -953,7 +953,7 @@ print("Intercept: ", model1.intercept_)
 
 #%% [markdown]
 #  ## Section 4: Modeling and Evaluation 
-#  ### Section 3a: KNN Model
+#  ### Section 4a: KNN Model
 #  
 #  We'll put something useful here when the words are needed. 
 # 
@@ -979,4 +979,29 @@ plt.show()
 
 
 
+
+#%% [markdown]
+#  ### Section 4b: Random Forrest
+#  
+#  We'll put something useful here when the words are needed. 
+# 
+
 #%%
+# Random Forest
+#
+# Grid Search
+clf=RandomForestClassifier()
+kf=KFold(n_splits=3)
+max_features=np.array([1,2,3,4,5])
+n_estimators=np.array([25,50,100,150,200])
+min_samples_leaf=np.array([25,50,75,100])
+param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
+grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
+gres=grid.fit(X_train,y_train)
+print("Best",gres.best_score_)
+print("params",gres.best_params_)
+
+#Tuning the tree
+
+clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
+clf.fit(x_train,y_train)
