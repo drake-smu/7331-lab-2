@@ -16,8 +16,14 @@ except:
 #
 # <a id="top"></a>
 # ## Table of Contents
-# * <a href="#Business">Business Understanding</a>
-# * <a href="#Understanding">Data Understanding</a>
+# * <a href="#Business">Section 1: Business Understanding</a>
+#   *<a href="#Business1">Section 1.1: Data Description</a>
+#   *<a href="#Business2">Section 1.2: Data Potential</a>
+# * <a href="#Understanding">Section 2: Data Understanding</a>
+#   * <a href="#Understanding1">Section 2.1: Variable Description</a>
+#   * <a href="#Understanding2">Section 2.2: Data Quality</a>
+#   * <a href="#Understanding3">Section 2.3: Simple Statistics</a>
+#   * <a href="#Understanding4">Section 2.4: Interesting Visualizations</a>
 # * <a href="#distance">Measuring Distances</a>
 # * <a href="#KNN">K-Nearest Neighbors</a>
 # * <a href="#naive">Naive Bayes</a>
@@ -25,7 +31,10 @@ except:
 #%% [markdown]
 # <a id="Business"></a> <a href="#top">Back to Top</a>
 #  ## Section 1: Business Understanding
-#  ### Section 1a: Describe the purpose of the data set you selected.
+# <a id="Business1"></a> <a href="#top">Back to Top</a>
+#  ### Section 1.1: Data Description
+# 
+#  Describe the purpose of the data set you selected.
 #  We chose this dataset from the UCI's machine learning repository for its categorical
 #  predictive attributes.  It contains 1994 Census data pulled from the US Census
 #  database.  The prediction task we've set forth is to predict if a persons
@@ -33,8 +42,10 @@ except:
 #  attributes in the census database. The link to the data source is below:
 # 
 #  https://archive.ics.uci.edu/ml/datasets/census+income
-# 
-#  ### Section 1b: Describe how you would define and measure the outcomes from the dataset.
+# <a id="Business2"></a> <a href="#top">Back to Top</a>
+#  ### Section 1.2: Data potential
+#  
+#  Describe how you would define and measure the outcomes from the dataset.
 #  (That is, why is this data important and how do you know if you have mined
 #  useful knowledge from the dataset? How would you measure the effectiveness of
 #  a good prediction algorithm? Be specific.)
@@ -52,7 +63,10 @@ except:
 #%% [markdown]
 # <a id="Understanding"></a> <a href="#top">Back to Top</a>
 #  ## Section 2: Data Understanding
-#  ### Section 2a: Describe the meaning and type of data for each attribute
+# <a id="Understanding1"></a> <a href="#top">Back to Top</a>
+#  ### Section 2.1: Variable Description
+#  
+#  Describe the meaning and type of data for each attribute
 #  Here we will discuss each attribute and give some description about its ranges.
 # 
 # 
@@ -76,8 +90,8 @@ except:
 #  * capital_loss - losses from investment sources, separate from wages/salary
 #  * hours_per_week - How many hours a week did they work?
 # 
-# 
-#  ### Section 2b: Data Quality
+# <a id="Understanding2"></a> <a href="#top">Back to Top</a>
+#  ### Section 2.2: Data Quality
 #  Verify data quality: Explain any missing values, duplicate data, and outliers.
 #  Are those mistakes? How do we deal with these problems?
 # 
@@ -165,6 +179,7 @@ df_census = df_census.replace(to_replace=(' ?'),value='Other')
 # df_census['income_bracket'] = df_census['income_bracket'].apply(lambda x: 1 if x=='>50K' else 0)
 
 # %% [markdown]
+# <a id="Understanding3"></a> <a href="#top">Back to Top</a>
 #  ### Section 2c: Simple Statistics
 #
 #  #### Visualize appropriate statistics (e.g., range, mode, mean, median, variance, counts) for a subset of attributes. Describe anything meaningful you found from this or if you found something potentially interesting.
@@ -224,6 +239,7 @@ for i in secondary:
 # Masters, or a professional school. 
 
 # %% [markdown]
+# <a id="Understanding4"></a> <a href="#top">Back to Top</a>
 #  ### Section 2d: Interesting Visualizations
 #
 #  #### Visualize the most interesting attributes (at least 5 attributes, your opinion on what is interesting). Important: Interpret the implications for each visualization. Explain for each attribute why the chosen visualization is appropriate.
@@ -244,7 +260,7 @@ df_census.hist(figsize =(14,12))
 # %% [markdown]
 #  The histograms show us all things we expect to see from the
 #  numerical categories.  Most of the workforce is from 20 to 50.  Educational
-#  limitations look to have the largest difference between 8th - 9th grade.
+#  lidsmitations look to have the largest difference between 8th - 9th grade.
 #  Implying that high school drop out rates are a factor in the dataset.   Hours
 #  per week also exhibited a large distribution around 40 hours a week, which
 #  fits common conception of American work hours.  fnl weight also showed some
