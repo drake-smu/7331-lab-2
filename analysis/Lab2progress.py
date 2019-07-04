@@ -16,22 +16,23 @@ except:
 #
 # <a id="top"></a>
 # ## Table of Contents
-# * <a href="#Business">Section 1: Business Understanding</a>
-#   *<a href="#Business1">Section 1.1: Data Description</a>
-#   *<a href="#Business2">Section 1.2: Data Potential</a>
-# * <a href="#Understanding">Section 2: Data Understanding</a>
-#   * <a href="#Understanding1">Section 2.1: Variable Description</a>
-#   * <a href="#Understanding2">Section 2.2: Data Quality</a>
-#   * <a href="#Understanding3">Section 2.3: Simple Statistics</a>
-#   * <a href="#Understanding4">Section 2.4: Interesting Visualizations</a>
-# * <a href="#distance">Measuring Distances</a>
-# * <a href="#KNN">K-Nearest Neighbors</a>
+# * <a href="#business">Section 1: Business Understanding</a>
+#   * <a href="#business1">Section 1.1: Data Description</a>
+#   * <a href="#business2">Section 1.2: Data Potential</a>
+# * <a href="#understanding">Section 2: Data Understanding</a>
+#   * <a href="#understanding1">Section 2.1: Variable Description</a>
+#   * <a href="#understanding2">Section 2.2: Data Quality</a>
+#   * <a href="#understanding3">Section 2.3: Simple Statistics</a>
+#   * <a href="#understanding4">Section 2.4: Interesting Visualizations</a>
+# * <a href="#preparation">Section 3: Data Preparation:Part 1</a>
+# * <a href="#preparation1">Section 3: Data Preparation:Part 2</a>
+# * <a href="#knn">K-Nearest Neighbors</a>
 # * <a href="#naive">Naive Bayes</a>
-
+# * <a href="#rando">Random Forest</a>
 #%% [markdown]
-# <a id="Business"></a> <a href="#top">Back to Top</a>
+# <a id="business"></a> <a href="#top">Back to Top</a>
 #  ## Section 1: Business Understanding
-# <a id="Business1"></a> <a href="#top">Back to Top</a>
+# <a id="business1"></a> <a href="#top">Back to Top</a>
 #  ### Section 1.1: Data Description
 # 
 #  Describe the purpose of the data set you selected.
@@ -42,7 +43,7 @@ except:
 #  attributes in the census database. The link to the data source is below:
 # 
 #  https://archive.ics.uci.edu/ml/datasets/census+income
-# <a id="Business2"></a> <a href="#top">Back to Top</a>
+# <a id="business2"></a> <a href="#top">Back to Top</a>
 #  ### Section 1.2: Data potential
 #  
 #  Describe how you would define and measure the outcomes from the dataset.
@@ -61,9 +62,9 @@ except:
 #      money.
 #    * Does where you come from influence your income? (native country)
 #%% [markdown]
-# <a id="Understanding"></a> <a href="#top">Back to Top</a>
+# <a id="understanding"></a> <a href="#top">Back to Top</a>
 #  ## Section 2: Data Understanding
-# <a id="Understanding1"></a> <a href="#top">Back to Top</a>
+# <a id="understanding1"></a> <a href="#top">Back to Top</a>
 #  ### Section 2.1: Variable Description
 #  
 #  Describe the meaning and type of data for each attribute
@@ -90,7 +91,7 @@ except:
 #  * capital_loss - losses from investment sources, separate from wages/salary
 #  * hours_per_week - How many hours a week did they work?
 # 
-# <a id="Understanding2"></a> <a href="#top">Back to Top</a>
+# <a id="understanding2"></a> <a href="#top">Back to Top</a>
 #  ### Section 2.2: Data Quality
 #  Verify data quality: Explain any missing values, duplicate data, and outliers.
 #  Are those mistakes? How do we deal with these problems?
@@ -179,7 +180,7 @@ df_census = df_census.replace(to_replace=(' ?'),value='Other')
 # df_census['income_bracket'] = df_census['income_bracket'].apply(lambda x: 1 if x=='>50K' else 0)
 
 # %% [markdown]
-# <a id="Understanding3"></a> <a href="#top">Back to Top</a>
+# <a id="understanding3"></a> <a href="#top">Back to Top</a>
 #  ### Section 2c: Simple Statistics
 #
 #  #### Visualize appropriate statistics (e.g., range, mode, mean, median, variance, counts) for a subset of attributes. Describe anything meaningful you found from this or if you found something potentially interesting.
@@ -239,7 +240,7 @@ for i in secondary:
 # Masters, or a professional school. 
 
 # %% [markdown]
-# <a id="Understanding4"></a> <a href="#top">Back to Top</a>
+# <a id="understanding4"></a> <a href="#top">Back to Top</a>
 #  ### Section 2d: Interesting Visualizations
 #
 #  #### Visualize the most interesting attributes (at least 5 attributes, your opinion on what is interesting). Important: Interpret the implications for each visualization. Explain for each attribute why the chosen visualization is appropriate.
@@ -294,12 +295,69 @@ sns.countplot(x='income_bracket',
 
 # %% [markdown]
 #
-#  This bar chart represents income bracket by marital status.
-#  Interesting to see a few things, first off the <=50k income bracket highest
-#  counts come from the "Never-married" status.  This suggests that marriage does
-#  in fact come with alot of financial benefit, as you can see is relevant on the
-#  other half of the chart.  As married couples far outmatch any other category
-#  counts in the >50k income bracket.  We can confirm this again as most of the
-#  divorced, separated, or widowed people are located in the lower income
-#  bracket.  Suggesting that, if you want to make over 50k, you might
-#  want to get yourself a partner and keep them!
+#  This bar chart represents income bracket by marital status. Interesting to
+#  see a few things, first off the <=50k income bracket highest counts come from
+#  the "Never-married" status.  This suggests that marriage does in fact come
+#  with alot of financial benefit, as you can see is relevant on the other half
+#  of the chart.  As married couples far outmatch any other category counts in
+#  the >50k income bracket.  We can confirm this again as most of the divorced,
+#  separated, or widowed people are located in the lower income bracket.
+#  Suggesting that, if you want to make over 50k, you might want to get yourself
+#  a partner and keep them! For our next chart, Lets split up the age groups in
+#  bins of 10 years, and see what kind of income differences we see.
+#
+# %%
+df_age = df_census.loc[:,['gender', 'age', 'income_bracket', 'hours_per_week']]
+conditions = [
+    (df_age['age'] < 20),
+    (df_age['age'] < 30),
+    (df_age['age'] < 40),
+    (df_age['age'] < 50),
+    (df_age['age'] < 60),
+    (df_age['age'] < 70),
+    (df_age['age'] < 110)]
+choices = ['10-20', '20-30', '30-40','40-50','50-60','60-70','70-110']
+df_age['age_group'] = np.select(conditions, choices, default='70-110')
+
+sns.set_style('whitegrid')
+sns.countplot(x='age_group',
+    hue='income_bracket',
+    data=df_age,
+    palette='RdBu_r',
+    order=choices)
+
+# %% [markdown]
+#
+#  The first thing we're drawn too is that not many 10-20 year olds are making
+#  over 50k!  What a surprise.  Its interesting how the two income groups tend
+#  to converge once age groups get to the 40-50 range, but then both steadily
+#  decline afterwards.  This follows suit with the average retirement age in
+#  America of 62 years old.  But the largest jump in those in the >50k group
+#  looks to happen around age 30 to 40.  Suggesting that if you're not clearing
+#  that mark by 40, then chances are its going to get a harder to do so from
+#  then on. Next we'll, analyze means of hours worked per the
+#  education category.
+
+#%%
+
+df = df_census[['hours_per_week', 'education','education_num']].groupby('education').apply(lambda x: x.mean())
+df.sort_values('education_num', inplace=True)
+df.reset_index(inplace=True)
+
+# Draw plot
+fig, ax = plt.subplots(figsize=(10,10), dpi= 80)
+ax.hlines(y=df.index, xmin=30, xmax=50, color='gray', alpha=0.7, linewidth=1, linestyles='dashdot')
+ax.scatter(y=df.index, x=df.hours_per_week, s=75, color='firebrick', alpha=0.7)
+
+# Title, Label, Ticks and Ylim
+ax.set_title('Dot Plot for hours per week by education level', fontdict={'size':22})
+ax.set_xlabel('hours per week')
+ax.set_yticks(df.index)
+ax.set_yticklabels(df.education.str.title(), fontdict={'horizontalalignment': 'right'})
+ax.set_xlim(30, 50)
+plt.show()
+
+# %% [markdown]
+#
+# <a id="preparation"></a> <a href="#top">Back to Top</a>
+# ### Section 3: Data Preparation:Part 1
