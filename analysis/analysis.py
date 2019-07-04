@@ -17,7 +17,7 @@ import timeit
 import matplotlib.pyplot as plt
 get_ipython().run_line_magic('matplotlib', 'inline')
 #%%
-from lab_02.analysis import dataBuilding as lab_db
+from analysis import dataBuilding as lab_db
 
 ## Assign Default Vales for Columns
 cat_cols,cont_cols,drop_cols = lab_db.cat_cols,lab_db.cont_cols,lab_db.drop_cols
@@ -67,11 +67,7 @@ performance.append({'algorithm':'LogisticRegression', 'training_score':round(tra
 
 #%%
 knn_scores = []
-
-
-#%%
-%%time
-
+##
 ## Analyze KNN model using varying n_neighbor values. Identify 
 ## the optimal number of neighbors that allows for high degree 
 ## of accurancy while also being useful when tested on both 
