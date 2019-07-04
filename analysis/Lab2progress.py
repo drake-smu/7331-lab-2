@@ -24,8 +24,9 @@ except:
 #   * <a href="#understanding2">Section 2.2: Data Quality</a>
 #   * <a href="#understanding3">Section 2.3: Simple Statistics</a>
 #   * <a href="#understanding4">Section 2.4: Interesting Visualizations</a>
-# * <a href="#preparation">Section 3: Data Preparation:Part 1</a>
-# * <a href="#preparation1">Section 3: Data Preparation:Part 2</a>
+# * <a href="#preparation">Section 3: Data Preparation</a>
+#   * <a href="#preparation1">Section 3.1:Part 1</a>
+#   * <a href="#preparation2">Section 3.2:Part 2</a>
 # * <a href="#knn">K-Nearest Neighbors</a>
 # * <a href="#naive">Naive Bayes</a>
 # * <a href="#rando">Random Forest</a>
@@ -43,6 +44,7 @@ except:
 #  attributes in the census database. The link to the data source is below:
 # 
 #  https://archive.ics.uci.edu/ml/datasets/census+income
+#
 # <a id="business2"></a> <a href="#top">Back to Top</a>
 #  ### Section 1.2: Data potential
 #  
@@ -360,4 +362,29 @@ plt.show()
 # %% [markdown]
 #
 # <a id="preparation"></a> <a href="#top">Back to Top</a>
-# ### Section 3: Data Preparation:Part 1
+# ## Section 3: Data Preparation:Part 1
+#
+# Define and prepare your class variables. Use proper variable representations
+# (int, float, one-hot, etc.). Use pre-processing methods (as needed) for
+# dimensionality reduction, scaling, etc. Remove variables that are not
+# needed/useful for the analysis.
+# 
+#
+#
+# TODO - REMEMBER TO INPUT 2nd ROUND OF DATA PREP STUFF HERE FOR PRE-PROCESSING.  Variable drops, etc. 
+
+#%% [markdown]
+#
+# <a id="preparation1"></a> <a href="#top">Back to Top</a>
+# ## Section 3: Data Preparation:Part 2
+#
+# Describe the final dataset that is used for classification/regression (include
+# a description of any newly formed variables you created).
+#
+# Email from Ben: Make sure you show the final shape of the dataset.  Explain
+# how you dealt with outliers, missing values, preparation, transformation,
+# scaling, etc.   Make sure you set the table or use case for what are the input
+# variables (input features X) and output variables (output features : Y).  
+#
+# TODO - INSERT BULLSHIT HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE
+# MODELING.
