@@ -364,6 +364,8 @@ plt.show()
 # <a id="preparation"></a> <a href="#top">Back to Top</a>
 # ## Section 3: Data Preparation:Part 1
 #
+# <a id="preparation1"></a> <a href="#top">Back to Top</a>
+# ### Section 3.1 Part 1:
 # Define and prepare your class variables. Use proper variable representations
 # (int, float, one-hot, etc.). Use pre-processing methods (as needed) for
 # dimensionality reduction, scaling, etc. Remove variables that are not
@@ -375,8 +377,8 @@ plt.show()
 
 #%% [markdown]
 #
-# <a id="preparation1"></a> <a href="#top">Back to Top</a>
-# ## Section 3: Data Preparation:Part 2
+# <a id="preparation2"></a> <a href="#top">Back to Top</a>
+# ### Section 3.2 Part 2:
 #
 # Describe the final dataset that is used for classification/regression (include
 # a description of any newly formed variables you created).
