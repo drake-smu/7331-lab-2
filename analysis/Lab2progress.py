@@ -564,6 +564,6 @@ train_score = clf.fit(X_train,y_train)
 test_score = clf.fit(X_test,y_test)
 
 print(f'Random Forest : Training score - {round(train_score.best_score_,6)} - Test score - {round(test_score.best_score_,6)}')
-performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score.best_score_,6), 'testing_score':round(test_score.best_score_,6)})
 
 # %% [markdown]
