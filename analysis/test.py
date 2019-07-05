@@ -12,9 +12,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 #%%
-adults = pd.read_csv("lab_02/data/adult-training.csv",names=['Age','workclass','fnlwgt','education','education_num','marital_status','occupation','relationship','race','sex','capital_gain','capital_loss','hours_per_week','native_country','label'],  
+adults = pd.read_csv("data/adult-training.csv",names=['Age','workclass','fnlwgt','education','education_num','marital_status','occupation','relationship','race','sex','capital_gain','capital_loss','hours_per_week','native_country','label'],  
         skipinitialspace = True)
-adults_test = pd.read_csv('lab_02/data/adult-training.csv',
+adults_test = pd.read_csv('data/adult-training.csv',
     names=['Age','workclass','fnlwgt','education','education_num','marital_status','occupation','relationship','race','sex','capital_gain','capital_loss','hours_per_week','native_country','label'], 
         skipinitialspace = True)
 
