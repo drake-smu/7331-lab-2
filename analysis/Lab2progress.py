@@ -31,7 +31,7 @@ except:
 #   * <a href="#modeling1">Section 4.1:Part 1</a>
 #   * <a href="#modeling2">Section 4.2:Part 2</a>
 #   * <a href="#modeling3">Section 4.3:Part 3</a>
-#       * <a href="#modeling3_1">Task 1</a>
+#       * <a href="#modeling3_1">Task:Regression 1</a>
 #           * <a href="#modeling3_1_1">Logistic Regression:</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
 #           * <a href="#modeling3_1_3">XGBoost:</a>
@@ -448,8 +448,19 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # measure(s) appropriate for analyzing the results of your modeling? Give a
 # detailed explanation backing up any assertions.
 #
-# TODO - Insert metrics explanation
+# 
+# Now lets take the time to explain some of the precision outputs from our initial run.
+# * precision - this is the ratio of the number of true positives and false positives.
+# * recall - this is the ratio of the number of true positives and false negatives
+# * f1-score - the harmonic mean of the precision and recall.
+# * support - occurances in each class
+# * accuracy - count of predictions where the predicted value equals the actual value
+# * Log Loss - the negative log-likelihood of correct classification given the classifier prediction.
 #
+# 
+#  These are the metrics we'll be tracking as we improve our model and will
+#  provide a summary at the end to compare each of our models. 
+# TODO - Answer last quesetion: of Why are the # measure(s) appropriate for analyzing the results of your modeling? Give a detailed explanation backing up any assertions.
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
@@ -477,7 +488,10 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #
 #
 # <a id="modeling3_1"></a> <a href="#top">Back to Top</a>
-# ### Task 1:  Classification of making >= or <= 50k
+# ### Task 1:  Regression of making >= or <= 50k
 #
-# Our first task is to classify whether or not a person makes over 50k based on
-# all the values in the dataset. 
+# Our first task is to create a regression model for whether or not a person
+# makes over 50k based on the attributes in the dataset.  We will use Logistic
+# Regression for this as you will see below. 
+#
+#
