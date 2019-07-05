@@ -529,7 +529,15 @@ performance.append({'algorithm':'LogisticRegression', 'training_score':round(tra
 # ### Random Forest
 #
 # TODO- Input words on Random Forest and what it does. 
-# 
+#
+# One of the most commonly used classifier techniques is random forest, due to
+# its very low bias and general stability when it comes to classification.  One
+# method of optimizing a random forest model is to try different parameters to
+# increase performance. Another method of doing so is by utilizing grid search
+# to let random forrest decide which combination of hyperparameters would be best
+# implemented in your model.  We chose this route as it saves both time and
+# sanity when comparing so many different parameters.   
+#
 #
 # %%
 from sklearn.ensemble import RandomForestClassifier
@@ -552,4 +560,10 @@ print("params",gres.best_params_)
 
 
 clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
-clf.fit(X_train,y_train)
+train_score = clf.fit(X_train,y_train)
+test_score = clf.fit(X_test,y_test)
+
+print(f'Random Forest : Training score - {round(train_score.best_score_,6)} - Test score - {round(test_score.best_score_,6)}')
+performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+
+# %% [markdown]
