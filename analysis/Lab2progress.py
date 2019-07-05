@@ -372,65 +372,34 @@ plt.show()
 # dimensionality reduction, scaling, etc. Remove variables that are not
 # needed/useful for the analysis.
 #
-# We decided to reimport our data and show all the cleaning steps in one place
-# before we begin our classification models.  As some have been added from section 2.2
-#
+# We've built a seperate py file that does all the pre-processing and will
+# automatically generate and clean our data for classification.  We will import
+# it as lab_db from the dataBuilding py file
 #
 # %%
 # Data Import
-df_training = pd.read_csv("data/adult-training.csv",
-    names=df_cols, 
-    skipinitialspace = True)
-
-df_test = pd.read_csv("data/adult-test.csv",
-    names = df_cols,
-    skipinitialspace = True,
-    skiprows=1)
-
-# Variable drops, etc. 
-replace_edu_no = ('1st-4th', '5th-6th','7th-8th','9th', '10th', '11th', '12th', 'Preschool')
-replace_edu_associate = ('Assoc-acdm', 'Assoc-voc')
-replace_edu_diploma = ('Some-college', 'HS-grad')
-
-df_training.education = df_training.education.replace(to_replace=replace_edu_no,value='No Diploma')
-df_training.education = df_training.education.replace(to_replace=replace_edu_associate,value='Associates')
-df_training.education = df_training.education.replace(to_replace=replace_edu_diploma,value='Diploma')
-
-df_test.education = df_test.education.replace(to_replace=replace_edu_no,value='No Diploma')
-df_test.education = df_test.education.replace(to_replace=replace_edu_associate,value='Associates')
-df_test.education = df_test.education.replace(to_replace=replace_edu_diploma,value='Diploma')
-
-df_training['education'] = df_training['education'].str.strip()
-df_test['education'] = df_test['education'].str.strip()
-
-
-# %%
-# Put countries in their native region continent
-replace_northA = ('United-States', 'Honduras', 'Mexico','Puerto-Rico','Canada', 'Outlying-US(Guam-USVI-etc)', 'Nicaragua', 'Guatemala', 'El-Salvador')
-replace_carib = ('Cuba', 'Jamaica', 'Trinadad&Tobago', 'Haiti', 'Dominican-Republic')
-replace_asia = ('South', 'Cambodia','Thailand','Laos', 'Taiwan', 'China', 'Japan', 'India', 'Iran', 'Philippines', 'Vietnam', 'Hong')
-replace_europe = ('England', 'Germany', 'Portugal', 'Italy', 'Poland', 'France', 'Yugoslavia','Scotland', 'Greece', 'Ireland', 'Hungary', 'Holand-Netherlands')
-replace_sa = ('Columbia', 'Ecuador', 'Peru')
-replace_other = ('?')
-df_training.native_country = df_training.native_country.replace(to_replace=replace_northA,value='North America')
-df_training.native_country = df_training.native_country.replace(to_replace=replace_carib,value='Caribbean')
-df_training.native_country = df_training.native_country.replace(to_replace=replace_asia,value='Asia')
-df_training.native_country = df_training.native_country.replace(to_replace=replace_europe,value='Europe') 
-df_training.native_country = df_training.native_country.replace(to_replace=replace_sa,value='South America')
-df_training.native_country = df_training.native_country.replace(to_replace=replace_other,value='Other')   
-
-df_test.native_country = df_test.native_country.replace(to_replace=replace_northA,value='North America')
-df_test.native_country = df_test.native_country.replace(to_replace=replace_carib,value='Caribbean')
-df_test.native_country = df_test.native_country.replace(to_replace=replace_asia,value='Asia')
-df_test.native_country = df_test.native_country.replace(to_replace=replace_europe,value='Europe') 
-df_test.native_country = df_test.native_country.replace(to_replace=replace_sa,value='South America')
-df_test.native_country = df_test.native_country.replace(to_replace=replace_other,value='Other') 
-
-df_training.drop(drop_cols,axis=1,inplace=True)
-df_test.drop(drop_cols,axis=1,inplace=True)
-
-
 #
+from analysis import dataBuilding as lab_db
+
+# Assign Default Vales for Columns
+cat_cols,cont_cols,drop_cols = lab_db.cat_cols,lab_db.cont_cols,lab_db.drop_cols
+
+# Drop Columns (if any)
+X,y = lab_db.build_df(drop_cols)
+
+# Transform continuous cols to scaled versions
+# Transform categorical cols to Encoded Cols
+trans = lab_db.build_transform(cont_cols,cat_cols)
+
+#%%
+# Execute Transforms specified above on all X data
+X_processed = trans[1].fit_transform(X)
+enc_headers = trans[1].named_transformers_['cat'].named_steps['onehot'].get_feature_names()
+new_headers = np.concatenate((cont_cols,enc_headers))
+#%%
+# Split processed X data into training and test sets.
+# Also separate y (label) data into training and test sets.
+X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 
 # TODO - REMEMBER TO INPUT 2nd ROUND OF DATA PREP STUFF HERE FOR PRE-PROCESSING.
 
