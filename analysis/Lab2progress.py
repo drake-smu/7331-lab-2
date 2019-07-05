@@ -31,7 +31,7 @@ except:
 #   * <a href="#modeling1">Section 4.1:Part 1</a>
 #   * <a href="#modeling2">Section 4.2:Part 2</a>
 #   * <a href="#modeling3">Section 4.3:Part 3</a>
-#       * <a href="#modeling3_1">Task:Regression 1</a>
+#       * <a href="#modeling3_1">Task 1:Classification 1</a>
 #           * <a href="#modeling3_1_1">Logistic Regression:</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
 #           * <a href="#modeling3_1_3">KNN:</a>
@@ -431,8 +431,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # scaling, etc.   Make sure you set the table or use case for what are the input
 # variables (input features X) and output variables (output features : Y).  
 #
-# TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE
-# MODELING.
+# TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
+#
 
 # %% [markdown]
 #
@@ -500,3 +500,25 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # ### Logistic Regression
 #
 #
+#%%
+## Initialize performance array to store model performances for various 
+## models used in Lab 02.
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+
+performance = []
+
+logClassifier = LogisticRegression()
+
+#%%
+## Fit Logistic Classifier on training data
+logClassifier.fit(X_train,y_train)
+train_score = logClassifier.score(X_train,y_train)
+test_score = logClassifier.score(X_test,y_test)
+
+## Analyze how the model performed when tested against both 
+## the data the model used for fit and test data. This helps 
+## us identify overfitting.
+print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
+performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
