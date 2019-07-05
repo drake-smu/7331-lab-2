@@ -34,8 +34,8 @@ except:
 #       * <a href="#modeling3_1">Task:Regression 1</a>
 #           * <a href="#modeling3_1_1">Logistic Regression:</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
-#           * <a href="#modeling3_1_3">XGBoost:</a>
-#           * <a href="#modeling3_1_4">KNN:</a>
+#           * <a href="#modeling3_1_3">KNN:</a>
+#           * <a href="#modeling3_1_4">XGBoost:</a>
 #       * <a href="#modeling3_2">Task 2</a>
 #           * <a href="#modeling3_2_1">Unknown:</a>
 #           * <a href="#modeling3_2_2">Unknown:</a>    
@@ -488,10 +488,15 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #
 #
 # <a id="modeling3_1"></a> <a href="#top">Back to Top</a>
-# ### Task 1:  Regression of making >= or <= 50k
+# ### Task 1:  Logistic Regression of making >= or <= 50k
 #
-# Our first task is to create a regression model for whether or not a person
-# makes over 50k based on the attributes in the dataset.  We will use Logistic
-# Regression for this as you will see below. 
+# Because our response variable is categorical, we will be two classification
+# tasks on our dataset.  Our first task is to create a logistic regression model
+# for whether or not a person makes over 50k based on the attributes in the
+# dataset.  We will follow that with other classification methods such as Random
+# Forest, KNN, and XGboost
+#
+# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
+# ### Logistic Regression
 #
 #
