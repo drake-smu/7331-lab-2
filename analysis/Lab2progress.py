@@ -27,6 +27,13 @@ except:
 # * <a href="#preparation">Section 3: Data Preparation</a>
 #   * <a href="#preparation1">Section 3.1:Part 1</a>
 #   * <a href="#preparation2">Section 3.2:Part 2</a>
+# * <a href="#modeling">Section 4: Data Preparation</a>
+#   * <a href="#modeling1">Section 4.1:Part 1</a>
+#   * <a href="#modeling2">Section 4.2:Part 2</a>
+#   * <a href="#modeling3">Section 4.3:Part 3</a>
+#   * <a href="#modeling4">Section 4.4:Part 4</a>
+#   * <a href="#modeling5">Section 4.5:Part 5</a>
+#   * <a href="#modeling6">Section 4.6:Part 6</a>
 # * <a href="#knn">K-Nearest Neighbors</a>
 # * <a href="#naive">Naive Bayes</a>
 # * <a href="#rando">Random Forest</a>
@@ -374,7 +381,7 @@ plt.show()
 #
 # We've built a seperate py file that does all the pre-processing and will
 # automatically generate and clean our data for classification.  We will import
-# it as lab_db from the dataBuilding py file
+# it as lab_db from the dataBuilding py file.
 #
 # %%
 # Data Import
@@ -416,5 +423,18 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # scaling, etc.   Make sure you set the table or use case for what are the input
 # variables (input features X) and output variables (output features : Y).  
 #
-# TODO - INSERT BULLSHIT HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE
+# TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE
 # MODELING.
+
+# %% [markdown]
+#
+# <a id="modeling"></a> <a href="#top">Back to Top</a>
+# ## Section 4: Modeling and Evaluation:
+#
+# <a id="modeling1"></a> <a href="#top">Back to Top</a>
+# ### Section 4.1 Part 1:
+#
+# Choose and explain your evaluation metrics that you will use (i.e., accuracy,
+# precision, recall, F-measure, or any metric we have discussed). Why are the
+# measure(s) appropriate for analyzing the results of your modeling? Give a
+# detailed explanation backing up any assertions.
