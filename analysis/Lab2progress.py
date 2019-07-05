@@ -31,12 +31,20 @@ except:
 #   * <a href="#modeling1">Section 4.1:Part 1</a>
 #   * <a href="#modeling2">Section 4.2:Part 2</a>
 #   * <a href="#modeling3">Section 4.3:Part 3</a>
+#       * <a href="#modeling3_1">Task 1</a>
+#           * <a href="#modeling3_1_1">Logistic Regression:</a>
+#           * <a href="#modeling3_1_2">Random Forest</a>    
+#           * <a href="#modeling3_1_3">XGBoost:</a>
+#           * <a href="#modeling3_1_4">KNN:</a>
+#       * <a href="#modeling3_2">Task 2</a>
+#           * <a href="#modeling3_2_1">Unknown:</a>
+#           * <a href="#modeling3_2_2">Unknown:</a>    
+#           * <a href="#modeling3_2_3">Unknown:</a>    
 #   * <a href="#modeling4">Section 4.4:Part 4</a>
 #   * <a href="#modeling5">Section 4.5:Part 5</a>
 #   * <a href="#modeling6">Section 4.6:Part 6</a>
-# * <a href="#knn">K-Nearest Neighbors</a>
-# * <a href="#naive">Naive Bayes</a>
-# * <a href="#rando">Random Forest</a>
+#
+
 #%% [markdown]
 # <a id="business"></a> <a href="#top">Back to Top</a>
 #  ## Section 1: Business Understanding
@@ -468,3 +476,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # different parameters of the algorithms!
 #
 #
+# <a id="modeling3_1"></a> <a href="#top">Back to Top</a>
+# ### Task 1:  Classification of making >= or <= 50k
+#
+# Our first task is to classify whether or not a person makes over 50k based on
+# all the values in the dataset. 
