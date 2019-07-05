@@ -431,6 +431,7 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # <a id="modeling"></a> <a href="#top">Back to Top</a>
 # ## Section 4: Modeling and Evaluation:
 #
+#
 # <a id="modeling1"></a> <a href="#top">Back to Top</a>
 # ### Section 4.1 Part 1:
 #
@@ -438,3 +439,32 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # precision, recall, F-measure, or any metric we have discussed). Why are the
 # measure(s) appropriate for analyzing the results of your modeling? Give a
 # detailed explanation backing up any assertions.
+#
+# TODO - Insert metrics explanation
+#
+#
+# <a id="modeling2"></a> <a href="#top">Back to Top</a>
+# ### Section 4.2 Part 2:
+# 
+# Choose the method you will use for dividing your data into training and
+# testing splits (i.e., are you using Stratified 10-fold cross validation?
+# Why?). Explain why your chosen method is appropriate or use more than one
+# method as appropriate. For example, if you are using time series data then you
+# should be using continuous training and testing sets across time.
+#
+# TODO - Explain test/training splits used. 
+#
+
+# %% [markdown] 
+#
+# <a id="modeling3"></a> <a href="#top">Back to Top</a>
+# ### Section 4.3 Part 3:
+#
+# Create three different classification/regression models for each task (e.g.,
+# random forest, KNN, and SVM for task one and the same or different algorithms
+# for task two). Two modeling techniques must be new (but the third could be SVM
+# or logistic regression). Adjust parameters as appropriate to increase
+# generalization performance using your chosen metric. You must investigate
+# different parameters of the algorithms!
+#
+#
