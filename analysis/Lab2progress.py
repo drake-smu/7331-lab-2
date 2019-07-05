@@ -522,3 +522,34 @@ test_score = logClassifier.score(X_test,y_test)
 ## us identify overfitting.
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+
+# %% [markdown]
+#
+# <a id="modeling3_1_2"></a> <a href="#top">Back to Top</a>
+# ### Random Forest
+#
+# TODO- Input words on Random Forest and what it does. 
+# 
+#
+# %%
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
+from sklearn.model_selection import KFold
+from sklearn.model_selection import GridSearchCV
+
+clf=RandomForestClassifier()
+kf=KFold(n_splits=3)
+max_features=np.array([1,2,3,4,5])
+n_estimators=np.array([25,50,100,150,200])
+min_samples_leaf=np.array([25,50,75,100])
+
+param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
+grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
+gres=grid.fit(X_train,y_train)
+
+print("Best",gres.best_score_)
+print("params",gres.best_params_)
+
+
+clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
+clf.fit(X_train,y_train)
