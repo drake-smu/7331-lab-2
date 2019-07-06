@@ -693,7 +693,7 @@ for n in range(1,20,2):
     knn_scores.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
 # %%
 
-train_score = knn.scores[5]
+print(knn_scores[3])
 
 # %% [markdown]
 #
@@ -714,7 +714,7 @@ for i,data in enumerate([train_scores,test_scores]):
 plt.style.use('seaborn-pastel')
 plt.show()
 
-performance.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
+performance.append(knn_scores[3])
 
 
 #%%
