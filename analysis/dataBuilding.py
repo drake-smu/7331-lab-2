@@ -76,8 +76,12 @@ def fetch_df():
     return df
 
 def process_target(df,target_col=target_col):
-    df[target_col] = (df["income_bracket"]
-        .apply(lambda x: ">50K" in x)).astype(int)
+    if df[target_col] = df["income_bracket"]:
+        df[target_col] = (df["income_bracket"]
+            .apply(lambda x: ">50K" in x)).astype(int)
+    elif df[target_col] = df["gender"]:
+        df[target_col] = (df["gender"]
+            .apply(lambda x: "Male" in x)).astype(int)
     return df
 
 def process_drops(df, cols):

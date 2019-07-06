@@ -610,26 +610,27 @@ print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)
 
 # %%
 
-# clf=RandomForestClassifier()
-# kf=KFold(n_splits=3)
-# max_features=np.array([1,2,3,4,5])
-# n_estimators=np.array([25,50,100,150,200])
-# min_samples_leaf=np.array([25,50,75,100])
+clf=RandomForestClassifier()
+kf=KFold(n_splits=3)
+max_features=np.array([1,2,3,4,5])
+n_estimators=np.array([25,50,100,150,200])
+min_samples_leaf=np.array([25,50,75,100])
 
-# param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
-# grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
-# gres=grid.fit(X_train,y_train)
+param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
+grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
+gris=grid.fit(X_train,y_train)
 
-# print("Best",gres.best_score_)
-# print("params",gres.best_params_)
+print("Best",gris.best_score_)
+print("params",gris.best_params_)
 
+# TODO - Input explanation of chosen parameters
 # %% 
 clf =RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
-performance.append({'algorithm':'Random Forrest', 'Accuracy Score':metrics.accuracy_score(y_test, y_pred)})
+performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
 
 
 ## This gives you the name of the features that are important according to the RFC
@@ -646,26 +647,6 @@ plt.ylabel('Features')
 plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
-
-# not working below here.  Will fix tomorrow. 
-# t2 = pd.Series(clf.feature_importances_).sort_values(ascending=False)
-# rf_scores = []
-# for i in range(1,60,5):
-#     _idx = t2.nlargest(n=i).index
-#     X_thin = X_train[:,_idx]
-#     X_thin_test = X_test[:,_idx]
-
-#     clf.fit(X_thin,y_train)
-
-#     y_pred=clf.predict(X_thin_test)
-#     from sklearn import metrics
-#     # Model Accuracy, how often is the classifier correct?
-#     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
-#     rf_scores.append({'num_features':i,'score':metrics.accuracy_score(y_test, y_pred)})
-
-# print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
-# performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
-
 
 
 # %% [markdown]
@@ -691,9 +672,6 @@ for n in range(1,20,2):
     test_scores.append(test_score)
     print(f'KNN : Training score - {train_score} -- Test score - {test_score}')
     knn_scores.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
-# %%
-
-print(knn_scores[3])
 
 # %% [markdown]
 #
@@ -716,5 +694,3 @@ plt.show()
 
 performance.append(knn_scores[3])
 
-
-#%%
