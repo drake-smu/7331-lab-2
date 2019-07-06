@@ -2,7 +2,7 @@
 # ms-python.python added
 import os
 try:
-	os.chdir(os.path.join(os.getcwd(), 'labs'))
+	os.chdir('~/7331-lab-2') 
 	print(os.getcwd())
 except:
 	pass
@@ -450,23 +450,30 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # measure(s) appropriate for analyzing the results of your modeling? Give a
 # detailed explanation backing up any assertions.
 #
-# 
-# Now lets take the time to explain some of the precision outputs from our initial run.
-# * precision - this is the ratio of the number of true positives and false positives.
-# * recall - this is the ratio of the number of true positives and false negatives
+#
+# Now lets take the time to explain some of the precision outputs.
+# * precision - this is the ratio of the number of true positives and false
+#   positives.
+# * recall - this is the ratio of the number of true positives and false
+#   negatives
 # * f1-score - the harmonic mean of the precision and recall.
 # * support - occurances in each class
-# * accuracy - count of predictions where the predicted value equals the actual value
-# * Log Loss - the negative log-likelihood of correct classification given the classifier prediction.
+# * accuracy - count of predictions where the predicted value equals the actual
+#   value
+# * Log Loss - the negative log-likelihood of correct classification given the
+#   classifier prediction.
 #
-# 
+#
 #  These are the metrics we'll be tracking as we improve our model and will
-#  provide a summary at the end to compare each of our models. 
-# TODO - Answer last quesetion: of Why are the # measure(s) appropriate for analyzing the results of your modeling? Give a detailed explanation backing up any assertions.
+#  provide a summary at the end to compare each of our models. For now we'll
+#  focus on accuracy as our main metric of comparison.  Then we'll do a
+#  statistical comparison of those accuracies later in the notebook. 
+# 
+# TODO -Answer last question: Why are the # measure(s) appropriate for analyzing the results of your modeling? Give a detailed explanation backing up any assertions.
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
-# 
+#
 # Choose the method you will use for dividing your data into training and
 # testing splits (i.e., are you using Stratified 10-fold cross validation?
 # Why?). Explain why your chosen method is appropriate or use more than one
@@ -490,21 +497,21 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #
 #
 # <a id="modeling3_1"></a> <a href="#top">Back to Top</a>
-# ### Task 1:  Logistic Regression of making >= or <= 50k
+# ### Task 1:  Classification of making > or <= 50k
 #
 # Because our response variable is categorical, we will be two classification
-# tasks on our dataset.  Our first task is to create a logistic regression model
-# for whether or not a person makes over 50k based on the attributes in the
-# dataset.  We will follow that with other classification methods such as Random
-# Forest, KNN, and XGboost
+# tasks on our dataset.  Our first task is to determine a persons income bracket
+# by way of 3 different classification models. Our first will be to create a
+# logistic regression model. We will follow that with other classification
+# methods such as Random Forest, KNN, and XGboost
 #
 # <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
 # ### Logistic Regression
 #
 #
 #%%
-## Initialize performance array to store model performances for various 
-## models used in Lab 02.
+# # Initialize performance array to store model performances for various 
+# # models used in Lab 02.
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
@@ -546,7 +553,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score
+from sklearn import metrics
+
 
 # clf=RandomForestClassifier()
 # kf=KFold(n_splits=3)
@@ -562,14 +570,48 @@ from sklearn.metrics import accuracy_score
 # print("params",gres.best_params_)
 
 
-clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
+clf =RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 
-print(f'Random Forest : Accuracy score - {accuracy_score(y_test, y_pred)}')
+print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+
+## This gives you the name of the features that are important according to the RFC
+feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
+top_feat = feature_imp.nlargest(n=8)
+
+# %%
+# Creating a bar plot
+sns.barplot(x=top_feat, y=top_feat.index)
+# Add labels to your graph
+plt.xlabel('Feature Importance Score')
+plt.ylabel('Features')
+plt.title("Visualizing Important Features")
+plt.legend()
+plt.show()
+
+# not working below here.  Will fix tomorrow. 
+t2 = pd.Series(clf.feature_importances_).sort_values(ascending=False)
+rf_scores = []
+for i in range(1,60,5):
+    _idx = t2.nlargest(n=i).index
+    X_thin = X_train[:,_idx]
+    X_thin_test = X_test[:,_idx]
+
+    clf.fit(X_thin,y_train)
+
+    y_pred=clf.predict(X_thin_test)
+    from sklearn import metrics
+    # Model Accuracy, how often is the classifier correct?
+    print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+    rf_scores.append({'num_features':i,'score':metrics.accuracy_score(y_test, y_pred)})
 
 # print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 # performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
 
 
 
+
+
+
+#%%
