@@ -388,8 +388,27 @@ plt.show()
 # needed/useful for the analysis.
 #
 # We've built a seperate py file that does all the pre-processing and will
-# automatically generate and clean our data for classification.  We will import
-# it as lab_db from the dataBuilding py file.
+# automatically clean and generate our dataframes for classification.  We will
+# import it as lab_db from the dataBuilding py file.  It has all the necessary
+# functions in order to build our data frames to be analyzed in the modeling
+# section below.  Below is a list of the basic data cleaning and variable
+# manipulation
+#
+# ### Data Specific cleaning
+# 1.  Reduced education levels to 3 levels of No Diploma, Associates, and Diploma
+# 2.  stripped any spaces off the leading or trailing characters
+# 3.  Segmented country of origin to continent
+# 4.  Encode the income_bracket target as binary
+#
+#
+# ### Preprocessing
+# For the continous variables, it will impute the median for any missing values
+# and then use the StandardScaler to scale all the value's to a normalized
+# range. Categorical attributes are transformed via sklearns "OneHotEncoder."
+# This functions assigns a binary column to each category for every attribute.
+# Currently we've set it to ignore any unknown variables ie - missing value's.  
+#
+#
 #
 # %%
 # Data Import
@@ -416,7 +435,7 @@ new_headers = np.concatenate((cont_cols,enc_headers))
 # Also separate y (label) data into training and test sets.
 X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 
-# TODO - REMEMBER TO INPUT 2nd ROUND OF DATA PREP STUFF HERE FOR PRE-PROCESSING.
+
 
 #%% [markdown]
 #
@@ -432,6 +451,9 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # variables (input features X) and output variables (output features : Y).  
 #
 # TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
+# 
+# Our final dataset 
+
 # %%
 # print('Number of observations in the training data:', len(X_train)
 # print('Number of observations in the test data:',len(X_test))
@@ -464,12 +486,13 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #   classifier prediction.
 #
 #
-#  These are the metrics we'll be tracking as we improve our model and will
-#  provide a summary at the end to compare each of our models. For now we'll
-#  focus on accuracy as our main metric of comparison.  Then we'll do a
-#  statistical comparison of those accuracies later in the notebook. 
-# 
-# TODO -Answer last question: Why are the # measure(s) appropriate for analyzing the results of your modeling? Give a detailed explanation backing up any assertions.
+#  Our chosen metric will be focusing on accuracy as our main metric of
+#  comparison.  Then we'll do a statistical comparison of those accuracies later
+#  in the notebook to compare which model performs the best.  
+#
+# TODO -Answer last question: Why are the # measure(s) appropriate for analyzing
+# the results of your modeling? Give a detailed explanation backing up any
+# assertions.
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
@@ -501,9 +524,9 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #
 # Because our response variable is categorical, we will be two classification
 # tasks on our dataset.  Our first task is to determine a persons income bracket
-# by way of 3 different classification models. Our first will be to create a
-# logistic regression model. We will follow that with other classification
-# methods such as Random Forest, KNN, and XGboost
+# by way of 3 different classification models. Our first attempt will be to
+# create a logistic regression model. We will follow that with other
+# classification methods such as Random Forest, KNN, and XGboost
 #
 # <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
 # ### Logistic Regression
@@ -577,7 +600,7 @@ print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)
 # ** n_estimators ** 
 #   * n_estimators sets the number of tree's in a forest.  Adding
 #   more tree's will increase your accuracy, but also make the training process
-#   very time costly.  As such we'll keep this parameter slightly lower.
+#   very time costly. 
 #
 #
 # ** min_samples_leaf **
@@ -607,10 +630,13 @@ clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+performance.append({'algorithm':'Random Forrest', 'Accuracy Score':metrics.accuracy_score(y_test, y_pred)})
+
 
 ## This gives you the name of the features that are important according to the RFC
 feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
 top_feat = feature_imp.nlargest(n=8)
+feature_imp
 
 # %%
 # Creating a bar plot
@@ -623,20 +649,20 @@ plt.legend()
 plt.show()
 
 # not working below here.  Will fix tomorrow. 
-t2 = pd.Series(clf.feature_importances_).sort_values(ascending=False)
-rf_scores = []
-for i in range(1,60,5):
-    _idx = t2.nlargest(n=i).index
-    X_thin = X_train[:,_idx]
-    X_thin_test = X_test[:,_idx]
+# t2 = pd.Series(clf.feature_importances_).sort_values(ascending=False)
+# rf_scores = []
+# for i in range(1,60,5):
+#     _idx = t2.nlargest(n=i).index
+#     X_thin = X_train[:,_idx]
+#     X_thin_test = X_test[:,_idx]
 
-    clf.fit(X_thin,y_train)
+#     clf.fit(X_thin,y_train)
 
-    y_pred=clf.predict(X_thin_test)
-    from sklearn import metrics
-    # Model Accuracy, how often is the classifier correct?
-    print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
-    rf_scores.append({'num_features':i,'score':metrics.accuracy_score(y_test, y_pred)})
+#     y_pred=clf.predict(X_thin_test)
+#     from sklearn import metrics
+#     # Model Accuracy, how often is the classifier correct?
+#     print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+#     rf_scores.append({'num_features':i,'score':metrics.accuracy_score(y_test, y_pred)})
 
 # print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 # performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
