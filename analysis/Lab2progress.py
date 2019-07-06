@@ -694,3 +694,55 @@ plt.show()
 
 performance.append(knn_scores[3])
 
+
+
+
+# %%
+# 
+# Data Import for task 2
+# 
+from analysis import dataBuilding as lab_db
+
+# Assign Default Vales for Columns
+cat_cols,cont_cols,drop_cols = lab_db.cat_cols,lab_db.cont_cols,lab_db.drop_cols
+
+# Drop Columns (if any)
+X,y = lab_db.build_df2(drop_cols)
+
+# Transform continuous cols to scaled versions
+# Transform categorical cols to Encoded Cols
+trans = lab_db.build_transform(cont_cols,cat_cols)
+
+#%%
+# Execute Transforms specified above on all X data
+X_processed = trans[1].fit_transform(X)
+enc_headers = trans[1].named_transformers_['cat'].named_steps['onehot'].get_feature_names()
+new_headers = np.concatenate((cont_cols,enc_headers))
+#%%
+# Split processed X data into training and test sets.
+# Also separate y (label) data into training and test sets.
+X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
+
+
+#%%
+# # Initialize performance array to store model performances for various 
+# # models used in Lab 02.
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+
+performance = []
+
+logClassifier = LogisticRegression()
+
+#%%
+## Fit Logistic Classifier on training data
+logClassifier.fit(X_train,y_train)
+train_score = logClassifier.score(X_train,y_train)
+test_score = logClassifier.score(X_test,y_test)
+
+## Analyze how the model performed when tested against both 
+## the data the model used for fit and test data. This helps 
+## us identify overfitting.
+print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
+performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})

@@ -76,12 +76,13 @@ def fetch_df():
     return df
 
 def process_target(df,target_col=target_col):
-    if df[target_col] = df["income_bracket"]:
-        df[target_col] = (df["income_bracket"]
-            .apply(lambda x: ">50K" in x)).astype(int)
-    elif df[target_col] = df["gender"]:
-        df[target_col] = (df["gender"]
-            .apply(lambda x: "Male" in x)).astype(int)
+    df[target_col] = (df["income_bracket"]
+        .apply(lambda x: ">50K" in x)).astype(int)
+    return df
+
+def process_target2(df,target_col=target_col):
+    df[target_col] = (df["gender"]
+        .apply(lambda x: "Male" in x)).astype(int)
     return df
 
 def process_drops(df, cols):
@@ -155,6 +156,17 @@ def build_df(drops=None):
     process_native(df)
     process_drops(df,drops)
     X = df.drop(columns=["income_bracket",target_col])
+    y = df[target_col]
+    
+    return X,y
+
+def build_df2(drops=None):
+    df = fetch_df()
+    process_target2(df, target_col=target_col)
+    process_edu(df)
+    process_native(df)
+    process_drops(df,drops)
+    X = df.drop(columns=["gender",target_col])
     y = df[target_col]
     
     return X,y
