@@ -432,7 +432,9 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # variables (input features X) and output variables (output features : Y).  
 #
 # TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
-#
+# %%
+# print('Number of observations in the training data:', len(X_train)
+# print('Number of observations in the test data:',len(X_test))
 
 # %% [markdown]
 #
@@ -544,26 +546,30 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import accuracy_score
 
-clf=RandomForestClassifier()
-kf=KFold(n_splits=3)
-max_features=np.array([1,2,3,4,5])
-n_estimators=np.array([25,50,100,150,200])
-min_samples_leaf=np.array([25,50,75,100])
+# clf=RandomForestClassifier()
+# kf=KFold(n_splits=3)
+# max_features=np.array([1,2,3,4,5])
+# n_estimators=np.array([25,50,100,150,200])
+# min_samples_leaf=np.array([25,50,75,100])
 
-param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
-grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
-gres=grid.fit(X_train,y_train)
+# param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
+# grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
+# gres=grid.fit(X_train,y_train)
 
-print("Best",gres.best_score_)
-print("params",gres.best_params_)
+# print("Best",gres.best_score_)
+# print("params",gres.best_params_)
 
 
 clf=RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
-train_score = clf.fit(X_train,y_train)
-test_score = clf.fit(X_test,y_test)
+clf.fit(X_train,y_train)
+y_pred = clf.predict(X_test)
 
-print(f'Random Forest : Training score - {round(train_score.best_score_,6)} - Test score - {round(test_score.best_score_,6)}')
-performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score.best_score_,6), 'testing_score':round(test_score.best_score_,6)})
+print(f'Random Forest : Accuracy score - {accuracy_score(y_test, y_pred)}')
 
-# %% [markdown]
+# print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
+# performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+
+
+
