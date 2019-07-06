@@ -560,7 +560,6 @@ performance.append({'algorithm':'LogisticRegression', 'training_score':round(tra
 # <a id="modeling3_1_2"></a> <a href="#top">Back to Top</a>
 # ### Random Forest
 #
-# TODO- Input words on Random Forest and what it does. 
 #
 # One of the most commonly used classifier techniques is random forest, due to
 # its very low bias and general stability when it comes to classification.  One
@@ -667,6 +666,55 @@ plt.show()
 # print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 # performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
 
+
+
+# %% [markdown]
+#
+# <a id="modeling3_1_3"></a> <a href="#top">Back to Top</a>
+# ### KNN - K-nearest neighbors
+#
+# Next we have our KNN model using varying n_neighbor values. We will attempt to
+# identify the optimal number of neighbors that allows for highest degree of
+# accurancy while also being useful when tested on both the training and test
+# set of data.
+#
+# %% 
+knn_scores = []
+train_scores = []
+test_scores = []
+for n in range(1,20,2):
+    knn = KNeighborsClassifier(n_neighbors=n,n_jobs=-1)
+    knn.fit(X_train,y_train)
+    train_score = knn.score(X_train,y_train)
+    test_score = knn.score(X_test,y_test)
+    train_scores.append(train_score)
+    test_scores.append(test_score)
+    print(f'KNN : Training score - {train_score} -- Test score - {test_score}')
+    knn_scores.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
+# %%
+
+train_score = knn.scores[5]
+
+# %% [markdown]
+#
+# Visualizing the test vs training model scores helps us identify the the
+# optimal n_neighbors level to train the model. We want to minimize the
+# difference in permance between two sets while as well as optimize number of
+# neighbors needed.  From the look of the scatterplot below, 5 nearest neighbors
+# appears to be our best value for an even bias/variance tradeoff.  Ther
+
+# %%
+fig, ax = plt.subplots()
+colors = ['tab:blue','tab:red']
+for i,data in enumerate([train_scores,test_scores]):
+
+    ax.scatter(x=range(1, 20, 2),y=data, c=colors[i])
+# plt.scatter(x=range(1, 20, 2),y=train_scores,c='b',)
+# plt.scatter(x=range(1, 20, 2),y=test_scores,c='r')
+plt.style.use('seaborn-pastel')
+plt.show()
+
+performance.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
 
 
 #%%
