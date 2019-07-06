@@ -547,7 +547,7 @@ performance.append({'algorithm':'LogisticRegression', 'training_score':round(tra
 # implemented in your model.  We chose this route as it saves both time and
 # sanity when comparing so many different parameters.   
 #
-#
+# We'll start with a baseline random forest for our starting position.  
 # %%
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
@@ -555,6 +555,38 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
 
+clf =RandomForestClassifier(n_estimators=100)
+clf.fit(X_train,y_train)
+y_pred = clf.predict(X_test)
+
+print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+
+# %% [markdown]
+#
+# Our initial run shows a decent accuracy with a basis of n_estimators at 100.
+# With an Accuracy of 84.7%.  Thats a pretty good initial run, but improvements
+# can be made.  Now we will implement a gridsearch over this random forrest to
+# extract optimal hyperparameters for tuning our random forest.  Our chosen
+# hyperparameter tuning features will be
+#
+# ** max_features **
+#   * Max Features looks to optimaze the number of features to
+#   consider when looking for a split
+#
+#
+# ** n_estimators ** 
+#   * n_estimators sets the number of tree's in a forest.  Adding
+#   more tree's will increase your accuracy, but also make the training process
+#   very time costly.  As such we'll keep this parameter slightly lower.
+#
+#
+# ** min_samples_leaf **
+#   * This is the minimum number of samples required for a leaf node to be created.  
+#
+
+
+
+# %%
 
 # clf=RandomForestClassifier()
 # kf=KFold(n_splits=3)
@@ -569,7 +601,7 @@ from sklearn import metrics
 # print("Best",gres.best_score_)
 # print("params",gres.best_params_)
 
-
+# %% 
 clf =RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
@@ -608,9 +640,6 @@ for i in range(1,60,5):
 
 # print(f'Random Forest : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 # performance.append({'algorithm':'Random Forrest', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
-
-
-
 
 
 
