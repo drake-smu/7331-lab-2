@@ -1115,7 +1115,10 @@ performance.append({'algorithm':'Naive BayesT2',
 #
 # ### Stochastic Gradient Descent
 #
-
+# Stochastic Gradient Desent is a relative of gradient desent algorithm.  Where
+# GD follows a step by step process through each observation, SGD shuffles
+# its observations randomly.  Introducing less bias into the model.  
+#
 #%%
 from sklearn.linear_model import SGDClassifier
 clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=5000, n_jobs = -1)
@@ -1152,7 +1155,7 @@ performance.append({'algorithm':'SGD T2',
 # better balance of precision and recall. 
 #
 #
-# TODO - Pick which model we like the best! Explain with visuals TODO - probably
+# TODO - Pick which model we like the best! Explain with visuals and more than 5 words
 # random forest t1 is the best 
 
 # %% 
@@ -1221,16 +1224,44 @@ tperf
 # model for interested parties? What other data should be collected? How often
 # would the model need to be updated, etc.? 
 #
-# One area where this model may prove useful is in collecting user information
-# from websites.  Given many websites have categorical descriptions of their
-# user data, it someone was say, in the healthcare sector and was attempting to
-# survey the general public on cardiovascular disease.   Some people may not
-# feel inclined to report their gender, but that information could prove useful
-# to the researcher in order to classify the person properly.  Using our
-# classification technique's, we could retrofit the model over their survey data
-# and begin to do prediction on that.   
 #
-# TODO - Insert madness about interested parties and why wthey would want this.
+# For our first task, targeting income, we forsee a multitude of possibilities
+# for application. Whether it be for banks / credit card companies to improve
+# their own models for how safe they feel lending a certain group of people
+# money based on their financial circumstances.  It could also be applied for
+# national survey's that people want to conduct.  Our model could help whittle
+# down what factors they want to include in their updated model.  ie - which are
+# the most significant variables and target those for analysis.  Another
+# application could be for local governments, to help plan new schools, roads,
+# child care and other facilities that benefit the population they reside in.  
+#
+#
+# For our second task, targeting gender, One area where this model may prove
+# useful is in collecting user information from websites.  Given many websites
+# have categorical descriptions of their user data, it someone was say, in the
+# healthcare sector and was attempting to survey the general public on
+# cardiovascular disease.   Some people may not feel inclined to report their
+# gender, but that information could prove useful to the researcher in order to
+# classify the person properly.  Using our classification technique's, we could
+# retrofit the model over their survey data and begin to do prediction on that.
+#
+#
+# Measuring the models value would be done through a consistent monitoring of
+# the algorithms Accuracy and F1-score as we've done in this project.  Giving
+# the end user the ability to keep tabs on how well the model is predicting, as
+# we add more data to it.  Deployment of the model, could be through a rest API
+# service, an internal function built in the backend of whatever database system
+# they have in place.  In terms of other data that could be useful to Census
+# Data, we would suggest finding a resource that can provide, housing ownership,
+# local economic key performance factors, zip codes to determine talent pools
+# for who lives in what area.  The possibilities are large depending on what
+# factors influence the customers business most.  As each business you would
+# sell this model too would likely have their own idea's behind what factors
+# make them sucssesful.  
+#
+#
+#
+# TODO - Insert madness about interested parties and why they would want this.
 #
 
 # %% [markdown]
