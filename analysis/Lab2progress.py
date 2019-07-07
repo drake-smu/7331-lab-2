@@ -1205,27 +1205,26 @@ performance.append({'algorithm':'SGD T2',
 # Below are the results from our various model runs over both tasks.  Judging
 # from the intial results, it seems our Random forrests were the best performers
 # on the accuracy side.  Yet the F1-score for Random ForestT1 was a bit lower.
-# Because we widened our parameter search on the second random forest to a great
+# Because we widened our parameter search on the second random forest to a greater
 # numer of estimators and a smaller minimum leaf node, it was able to yield a
-# better balance of precision and recall. 
+# better balance of precision and recall.  
 #
 #
-# TODO - Pick which model we like the best! Explain with visuals and more than 5 words
-# random forest t1 is the best 
-
 # %% 
-
+# Confidence interval
 tperf = pd.DataFrame(performance)
 tperf.round({'accuracy':5, 'f1 score':5})
-tperf
 
-# TODO - Not rounding to percentages.  Not quite sure why.  will come back
+from math import sqrt
+tnew = tperf
+z = 1.96
 
-#Confidence Intervals. 
+for index_label, row_series in tnew.iterrows():
+   # For each row update the 'Bonus' value to it's double
+   tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
+   
+tnew
 
-
-# %% [markdown]
-# 
 
 # %% [markdown]
 #
@@ -1328,35 +1327,3 @@ tperf
 # 
 # TODO - Talk about Che's parallelized search
 #
-
-#%%
-from math import sqrt
-tnew = tperf
-z = 1.96
-for index, row in tnew.iterrows():
-    tnew['confint'] = z * sqrt((row['accuracy'] * (1-row['accuracy']))/ row['observations']) 
-tnew
-
-
-#%%
-# for column in tnew:
-#     print(tnew[column])
-
-#%%
-from math import sqrt
-tnew = tperf
-z = 1.96
-
-for index_label, row_series in tnew.iterrows():
-   # For each row update the 'Bonus' value to it's double
-   tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
-
-
-
-
-
-
-
-
-
-#%%
