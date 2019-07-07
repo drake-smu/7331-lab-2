@@ -493,12 +493,12 @@ print('Number of observations in the test data:',len(X_test))
 #
 #  We settled on accuracy and F-1 score as our two metrics for tracking
 #  performance. Accuracy provides a simple viewpoint into the models
-#  performance, while F1-Score a balanced mean between precision and recall.
-#  Since our analysis still has a fair number of 
-#  We will do a statistical analysis comparing
-#  these metrics later in the report. 
+#  performance, while F1-Score a balanced mean between precision and recall. Our
+#  initial analysis shows we still have a fair amount of false positives showing
+#  an uneven balanced class, which is why we will focus on F1 for this analysis.
+#  We will do a statistical analysis comparing these metrics later in the
+#  report. 
 #
-# TODO - May need to expand on metric selection.
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
@@ -1089,13 +1089,13 @@ model = GaussianNB()
 model.fit(X_train, y_train)
 pred_y = model.predict(X_test)
 plot_confusion_matrix(y_test,pred_y,normalize=True)
-print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, pred_y))
 
-print("Haive Bayes : F1 score",metrics.f1_score(y_test, y_pred))
+print("Naive Bayes : F1 score",metrics.f1_score(y_test, pred_y))
 
 performance.append({'algorithm':'Naive BayesT2', 
-    'accuracy':metrics.accuracy_score(y_test, y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'accuracy':metrics.accuracy_score(y_test, pred_y),
+    'f1 score':metrics.f1_score(y_test,pred_y)})
 #%% [markdown]
 #
 # TODO tune something here, i think we can get this F1 score to 90%
@@ -1134,8 +1134,11 @@ performance.append({'algorithm':'SGD T2',
 # of the results to bolster the analysis. Explain any visuals and analyze why
 # they are interesting to someone that might use this model.
 #
-# Below are the results from our various model runs over both tasks.  Judging from the  balancing of accuracy with 
-# TODO - Pick which model we like the best!  Explain with visuals 
+# Below are the results from our various model runs over both tasks.  Judging
+# from the intial results, it seems our Random forrests were the 
+#
+#
+# TODO - Pick which model we like the best! Explain with visuals 
 # TODO - probably random forest t1 is the best 
 
 # %% 
