@@ -890,3 +890,21 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 
+#%%
+
+ plot_confusion_matrix(y_test, y_pred)
+#%%
+
+#%%
+from sklearn.naive_bayes import GaussianNB
+model = GaussianNB()
+model.fit(X_train, y_train)
+pred_y = model.predict(X_test)
+plot_confusion_matrix(y_test,pred_y,normalize=True)
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+#%%
+from sklearn.linear_model import SGDClassifier
+clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=500)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
