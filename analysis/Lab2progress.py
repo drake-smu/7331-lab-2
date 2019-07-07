@@ -402,12 +402,13 @@ plt.show()
 #
 #
 # ### Preprocessing
-# For the continous variables, it will impute the median for any missing values
+# For the continous variables, we will impute the median for any missing values
 # and then use the StandardScaler to scale all the value's to a normalized
 # range. Categorical attributes are transformed via sklearns "OneHotEncoder."
 # This functions assigns a binary column to each category for every attribute.
 # Currently we've set it to ignore any unknown variables ie - missing value's.  
-#
+# 
+# 
 #
 #
 # %%
@@ -453,10 +454,10 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
 # 
 # Our final dataset 
+print('Number of observations in the training data:', len(X_train)
+print('Number of observations in the test data:',len(X_test))
 
-# %%
-# print('Number of observations in the training data:', len(X_train)
-# print('Number of observations in the test data:',len(X_test))
+
 
 # %% [markdown]
 #
@@ -473,7 +474,7 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # detailed explanation backing up any assertions.
 #
 #
-# Now lets take the time to explain some of the precision outputs.
+# Lets take the time to explain some of the precision outputs.
 # * precision - this is the ratio of the number of true positives and false
 #   positives.
 # * recall - this is the ratio of the number of true positives and false
@@ -487,12 +488,15 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #
 #
 #  Our chosen metric will be focusing on accuracy as our main metric of
-#  comparison.  Then we'll do a statistical comparison of those accuracies later
-#  in the notebook to compare which model performs the best.  
+#  comparison.  We could analyze with F=1 scores, precision or recall.  Yet
+#  because the cost of a false prediction isn't necessarily high with our
+#  models, we settled on accuracy as our metric. Then we'll do a statistical
+#  comparison of those accuracies later in the notebook to compare which model
+#  performs the best. 
 #
-# TODO -Answer last question: Why are the # measure(s) appropriate for analyzing
-# the results of your modeling? Give a detailed explanation backing up any
-# assertions.
+# TODO - Answer why accuracy is the best metric
+# TODO - Answer last question: Why are the # measure(s) appropriate for analyzing
+#
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
@@ -503,8 +507,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # method as appropriate. For example, if you are using time series data then you
 # should be using continuous training and testing sets across time.
 #
-# TODO - Explain test/training splits used. 
-#
+# TODO - Explain test/training splits used. My explanation is.... lacking.
+# We chose to use sklearns test/train split function for 
 
 # %% [markdown] 
 #
@@ -522,8 +526,7 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # <a id="modeling3_1"></a> <a href="#top">Back to Top</a>
 # ### Task 1:  Classification of making > or <= 50k
 #
-# Because our response variable is categorical, we will be two classification
-# tasks on our dataset.  Our first task is to determine a persons income bracket
+# Our first task is to determine a persons income bracket
 # by way of 3 different classification models. Our first attempt will be to
 # create a logistic regression model. We will follow that with other
 # classification methods such as Random Forest, KNN, and XGboost
@@ -540,7 +543,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 
 performance = []
-
 logClassifier = LogisticRegression()
 
 #%%
@@ -817,3 +819,6 @@ plt.ylabel('Features')
 plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
+
+
+# %% 
