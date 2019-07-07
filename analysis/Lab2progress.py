@@ -36,12 +36,15 @@ except:
 #           * <a href="#modeling3_1_2">Random Forest</a>    
 #           * <a href="#modeling3_1_3">KNN:</a>
 #       * <a href="#modeling3_2">Task 2:Classification 2</a>
-#           * <a href="#modeling3_2_1">Unknown:</a>
-#           * <a href="#modeling3_2_2">Unknown:</a>    
-#           * <a href="#modeling3_2_3">Unknown:</a>    
+#           * <a href="#modeling3_2_1">Logistic Regression:</a>
+#           * <a href="#modeling3_2_2">Random Forest:</a>    
+#           * <a href="#modeling3_2_3">Naive Bayes:</a> 
+#           * <a href="#modeling3_2_4">Stochastic Gradient Descent:</a> 
 #   * <a href="#modeling4">Section 4.4:Part 4</a>
 #   * <a href="#modeling5">Section 4.5:Part 5</a>
 #   * <a href="#modeling6">Section 4.6:Part 6</a>
+#   * <a href="#deployment">Section 4.7:Deployment</a>
+#   * <a href="#exceptional">Section 4.8:Exceptional Work 6</a>
 #
 
 #%% [markdown]
@@ -107,6 +110,7 @@ except:
 #  * capital_loss - losses from investment sources, separate from wages/salary
 #  * hours_per_week - How many hours a week did they work?
 # 
+#
 # <a id="understanding2"></a> <a href="#top">Back to Top</a>
 #  ### Section 2.2: Data Quality
 #  Verify data quality: Explain any missing values, duplicate data, and outliers.
@@ -698,6 +702,7 @@ plot_confusion_matrix(y_test, y_pred)
 
 # %%
 
+# Just commented out the grid search so it would run faster.  We can reinput at final run time. 
 #clf=RandomForestClassifier()
 #kf=KFold(n_splits=3)
 #max_features=np.array([1,2,3,4,5])
@@ -933,6 +938,8 @@ performance = []
 logClassifier = LogisticRegression()
 
 #%%
+#
+# <a id="modeling3_2_1"></a> <a href="#top">Back to Top</a>
 ## Fit Logistic Classifier on training data
 logClassifier.fit(X_train,y_train)
 train_score = logClassifier.score(X_train,y_train)
@@ -960,7 +967,11 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # TODO come up with a dream scenario like this exists, it can be stupid we jsut need one
 # Let us now move on to the random forest. We will first run a grid search in parallel in order to find the proper parameters for this one.
 # TODO Explain this a bit better, just barf words here
+#
+# ### Random Forest
 # %%
+# <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
+#
 #Che Forrest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
@@ -1021,7 +1032,9 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 #%% [markdown]
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
 # naive bayes next:
-
+#
+# ### Naive Bayes
+# <a id="modeling3_2_3"></a> <a href="#top">Back to Top</a>
 #%%
 from sklearn.naive_bayes import GaussianNB
 model = GaussianNB()
@@ -1034,6 +1047,7 @@ print("F1:",metrics.f1_score(y_test, y_pred))
 #%% [markdown]
 # TODO tune something here, i think we can get this F1 score to 90%
 # Mext we will try out a stochastic gradient descent model:
+# <a id="modeling3_2_4"></a> <a href="#top">Back to Top</a>
 #%%
 from sklearn.linear_model import SGDClassifier
 clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=5000, n_jobs = -1)
@@ -1046,3 +1060,78 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 
 #%% Maybe discuss this its basically just a SVM lol
 # TODO
+
+# %% [markdown]
+#
+# <a id="modeling4"></a> <a href="#top">Back to Top</a>
+# ### Section 4.4 Part 4:
+#
+# Analyze the results using your chosen method of evaluation. Use visualizations
+# of the results to bolster the analysis. Explain any visuals and analyze why
+# they are interesting to someone that might use this model.
+#
+#
+# TODO - Pick which model we like the best!  Explain with visuals 
+#
+
+# %% [markdown]
+#
+# <a id="modeling5"></a> <a href="#top">Back to Top</a>
+# ### Section 4.5 Part 5:
+#
+# Discuss the advantages of each model for each classification task, if any. If
+# there are not advantages, explain why. Is any model better than another? Is
+# the difference significant with 95% confidence? Use proper statistical
+# comparison methods. You must use statistical comparison techniques—be sure
+# they are appropriate for your chosen method of validation as discussed in unit
+# 7 of the course.
+#
+#
+#
+# TODO - Statistical comparison here of all the models and whats better.  
+# TODO - Still need a way to get the confidence intervals
+
+# %% [markdown]
+#
+# <a id="modeling6"></a> <a href="#top">Back to Top</a>
+# ### Section 4.6 Part 6:
+#
+# Which attributes from your analysis are most important? Use proper methods
+# discussed in class to evaluate the importance of different attributes. Discuss
+# the results and hypothesize about why certain attributes are more important
+# than others for a given classification task.
+#
+#
+#
+# TODO - Bullshit on which attributes matter most for each task.  
+
+
+# %% [markdown]
+#
+# <a id="deployment"></a> <a href="#top">Back to Top</a>
+# ### Section 4.7 Deployment:
+#
+# How useful is your model for interested parties (i.e., the companies or
+# organizations that might want to use it for prediction)? How would you measure
+# the model's value if it was used by these parties? How would your deploy your
+# model for interested parties? What other data should be collected? How often
+# would the model need to be updated, etc.? 
+#
+#
+# TODO - Insert madness about interested parties and why wthey would want this.
+#
+
+# %% [markdown]
+#
+# <a id="excpetional"></a> <a href="#top">Back to Top</a>
+# ### Section 4.7 Exceptional Work:
+#
+# You have free reign to provide additional analyses. One idea: grid search
+# parameters in a parallelized fashion and visualize the performances across
+# attributes. Which parameters are most significant for making a good model for
+# each classification algorithm?
+#
+#
+#
+# TODO - Talk about Che's parallelized search
+#
