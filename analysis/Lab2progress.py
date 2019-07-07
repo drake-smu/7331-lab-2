@@ -35,8 +35,7 @@ except:
 #           * <a href="#modeling3_1_1">Logistic Regression:</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
 #           * <a href="#modeling3_1_3">KNN:</a>
-#           * <a href="#modeling3_1_4">XGBoost:</a>
-#       * <a href="#modeling3_2">Task 2</a>
+#       * <a href="#modeling3_2">Task 2:Classification 2</a>
 #           * <a href="#modeling3_2_1">Unknown:</a>
 #           * <a href="#modeling3_2_2">Unknown:</a>    
 #           * <a href="#modeling3_2_3">Unknown:</a>    
@@ -410,7 +409,6 @@ plt.show()
 # 
 # 
 #
-#
 # %%
 # Data Import
 #
@@ -494,7 +492,7 @@ print('Number of observations in the test data:',len(X_test))
 #  comparison of those accuracies later in the notebook to compare which model
 #  performs the best. 
 #
-# TODO - Answer why accuracy is the best metric
+# TODO - Answer why accuracy is the best metric for our data
 # TODO - Answer last question: Why are the # measure(s) appropriate for analyzing
 #
 #
@@ -529,14 +527,12 @@ print('Number of observations in the test data:',len(X_test))
 # Our first task is to determine a persons income bracket
 # by way of 3 different classification models. Our first attempt will be to
 # create a logistic regression model. We will follow that with other
-# classification methods such as Random Forest, KNN, and XGboost
+# classification methods such as Random Forest, and K-nearest neighbor.
 #
-# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
-# ### Logistic Regression
-#
+
 #%%
 def plot_confusion_matrix(y_true, y_pred, 
-                          normalize=False,
+                          normalize=True,
                           title=None,
                           cmap=plt.cm.Blues):
     """
@@ -585,6 +581,19 @@ def plot_confusion_matrix(y_true, y_pred,
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     return ax
+
+# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
+# %% [markdown]
+# ### Logistic Regression
+#
+#
+# Logistic regression (LR) is a classification algorithm thats used to predict
+# the probability of our categorical dependent variable.  The basics behind LR
+# is that it takes the output of a linear model and crams it into a logistic
+# function to give it a probablity of 0 to 1 (but never equaling 0 or 1). 
+#
+#
+
 #%%
 # # Initialize performance array to store model performances for various 
 # # models used in Lab 02.
@@ -744,9 +753,11 @@ for n in range(1,20,2):
 #
 # Visualizing the test vs training model scores helps us identify the the
 # optimal n_neighbors level to train the model. We want to minimize the
-# difference in permance between two sets while as well as optimize number of
+# difference in performance between two sets while as well as optimize number of
 # neighbors needed.  From the look of the scatterplot below, 5 nearest neighbors
-# appears to be our best value for an even bias/variance tradeoff.  Ther
+# appears to be our best value for an even bias/variance tradeoff.  
+# 
+#
 
 # %%
 fig, ax = plt.subplots()
@@ -772,7 +783,8 @@ performance.append(knn_scores[3])
 # the attributes in the data.  This was chosen due to the binary outcome of that
 # column and it seemed like fun to predict.  On this task, we will classify the
 # gender of the person using XGBoost, LR, and KNN.  
-
+#
+#
 
 # %%
 #
@@ -878,26 +890,3 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 
-
-# %% 
-#%%
-
- plot_confusion_matrix(y_test, y_pred)
-#%%
-
-#%%
-from sklearn.naive_bayes import GaussianNB
-model = GaussianNB()
-
-model.fit(X_train, y_train)
-pred_y = model.predict(X_test)
-plot_confusion_matrix(y_test,pred_y,normalize=True)
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
-#%%
-from sklearn.linear_model import SGDClassifier
-clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=500)
-clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
-
-#%%
