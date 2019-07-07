@@ -610,20 +610,25 @@ print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)
 
 # %%
 
-clf=RandomForestClassifier()
-kf=KFold(n_splits=3)
-max_features=np.array([1,2,3,4,5])
-n_estimators=np.array([25,50,100,150,200])
-min_samples_leaf=np.array([25,50,75,100])
+# clf=RandomForestClassifier()
+# kf=KFold(n_splits=3)
+# max_features=np.array([1,2,3,4,5])
+# n_estimators=np.array([25,50,100,150,200])
+# min_samples_leaf=np.array([25,50,75,100])
 
-param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
-grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
-gris=grid.fit(X_train,y_train)
+# # max_features=np.array([1,2,3,4,5])
+# # n_estimators=np.array([25,50,100,150,200])
+# # min_samples_leaf=np.array([25,50,75,100])
 
-print("Best",gris.best_score_)
-print("params",gris.best_params_)
+# param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
+# grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
+# gris=grid.fit(X_train,y_train)
 
-# TODO - Input explanation of chosen parameters
+# print("Best",gris.best_score_)
+# print("params",gris.best_params_)
+
+# TODO - Input explanation of chosen parameters and how they effected output
+
 # %% 
 clf =RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
@@ -758,3 +763,57 @@ test_score = logClassifier.score(X_test,y_test)
 ## us identify overfitting.
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+
+
+# %%
+#Che Forrest
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
+from sklearn.model_selection import KFold
+from sklearn.model_selection import GridSearchCV
+svcEstimator = RandomForestClassifier()
+cv = 3
+
+#compare various values of C, kernels (rbf vs linear vs poly),decision_function_shape (ovo vs ovr)
+parameters = {'n_estimators': [100,250,500]
+            , 'max_depth': [5,25,50,100]}
+
+#Create a grid search object using the
+from sklearn.model_selection import GridSearchCV
+svcGridSearch = GridSearchCV(estimator=svcEstimator
+                   , n_jobs=8 # jobs to run in parallel
+                   , verbose=1 # low verbosity
+                   , param_grid=parameters
+                   , cv=cv # KFolds = 3
+                   , scoring='accuracy')
+
+svcGridSearch.fit(X_train, y_train)
+print("The best estimator based on F1 is ", svcGridSearch.best_estimator_)
+best_rf = svcGridSearch.best_estimator_
+
+# %%
+#Create from best estimator search of random forest
+clf=best_rf
+
+#Train the model using the training sets y_pred=clf.predict(X_test)
+clf.fit(X_train,y_train)
+
+y_pred=clf.predict(X_test)
+
+#Import scikit-learn metrics module for accuracy calculation
+from sklearn import metrics
+# Model Accuracy, how often is the classifier correct?
+print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+
+## This gives you the name of the features that are important according to the RFC
+feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
+top_feat = feature_imp.nlargest(n=8)
+
+# Creating a bar plot
+sns.barplot(x=top_feat, y=top_feat.index)
+# Add labels to your graph
+plt.xlabel('Feature Importance Score')
+plt.ylabel('Features')
+plt.title("Visualizing Important Features")
+plt.legend()
+plt.show()
