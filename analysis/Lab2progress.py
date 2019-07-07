@@ -451,13 +451,9 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # Describe the final dataset that is used for classification/regression (include
 # a description of any newly formed variables you created).
 #
-# Email from Ben: Make sure you show the final shape of the dataset.  Explain
-# how you dealt with outliers, missing values, preparation, transformation,
-# scaling, etc.   Make sure you set the table or use case for what are the input
-# variables (input features X) and output variables (output features : Y).  
-#
 # 
-# Our final dataset 
+# Our final dataset shape
+
 print('Number of observations in the training data:', len(X_train))
 print('Number of observations in the test data:',len(X_test))
 #
@@ -497,9 +493,10 @@ print('Number of observations in the test data:',len(X_test))
 #
 #  We settled on accuracy and F-1 score as our two metrics for tracking
 #  performance. Accuracy provides a simple viewpoint into the models
-#  performance, while F1-Score gives us the ability to get a feel for the
-#  combination of precision and recall.   We will do a statistical analysis
-#  comparing these metrics later in the report. 
+#  performance, while F1-Score a balanced mean between precision and recall.
+#  Since our analysis still has a fair number of 
+#  We will do a statistical analysis comparing
+#  these metrics later in the report. 
 #
 # TODO - May need to expand on metric selection.
 #
@@ -640,7 +637,7 @@ print(f'Logistic regression : accuracy score - {metrics.accuracy_score(y_test,y_
 print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
 
 performance.append({'algorithm':'LogisticRegressionT1',
-    'accuracy':round(metrics.accuracy_score(y_test,y_pred)),
+    'accuracy':metrics.accuracy_score(y_test,y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred)})
 #%% [markdown]
 #
@@ -993,7 +990,7 @@ print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y
 print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 
 performance.append({'algorithm':'LogisticRegressionT2',
-    'accuracy':round(metrics.accuracy_score(y_test,y_pred)),
+    'accuracy':metrics.accuracy_score(y_test,y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred)})
 
 #%% [markdown] This model is very interesting. Although it has a high rate of
@@ -1137,9 +1134,17 @@ performance.append({'algorithm':'SGD T2',
 # of the results to bolster the analysis. Explain any visuals and analyze why
 # they are interesting to someone that might use this model.
 #
-#
+# Below are the results from our various model runs over both tasks.  Judging from the  balancing of accuracy with 
 # TODO - Pick which model we like the best!  Explain with visuals 
-#
+# TODO - probably random forest t1 is the best 
+
+# %% 
+
+tperf = pd.DataFrame(performance)
+tperf
+
+# %% [markdown]
+# 
 
 # %% [markdown]
 #
@@ -1209,3 +1214,5 @@ performance.append({'algorithm':'SGD T2',
 #
 # TODO - Talk about Che's parallelized search
 #
+
+#%%
