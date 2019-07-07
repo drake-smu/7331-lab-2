@@ -452,8 +452,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
 # 
 # Our final dataset 
-print('Number of observations in the training data:', len(X_train)
-print('Number of observations in the test data:',len(X_test))
+# print('Number of observations in the training data:', len(X_train)
+# print('Number of observations in the test data:',len(X_test))
 
 
 
