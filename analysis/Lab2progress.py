@@ -35,8 +35,7 @@ except:
 #           * <a href="#modeling3_1_1">Logistic Regression:</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
 #           * <a href="#modeling3_1_3">KNN:</a>
-#           * <a href="#modeling3_1_4">XGBoost:</a>
-#       * <a href="#modeling3_2">Task 2</a>
+#       * <a href="#modeling3_2">Task 2:Classification 2</a>
 #           * <a href="#modeling3_2_1">Unknown:</a>
 #           * <a href="#modeling3_2_2">Unknown:</a>    
 #           * <a href="#modeling3_2_3">Unknown:</a>    
@@ -410,7 +409,6 @@ plt.show()
 # 
 # 
 #
-#
 # %%
 # Data Import
 #
@@ -529,14 +527,12 @@ print('Number of observations in the test data:',len(X_test))
 # Our first task is to determine a persons income bracket
 # by way of 3 different classification models. Our first attempt will be to
 # create a logistic regression model. We will follow that with other
-# classification methods such as Random Forest, KNN, and XGboost
+# classification methods such as Random Forest, and K-nearest neighbor.
 #
-# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
-# ### Logistic Regression
-#
+
 #%%
 def plot_confusion_matrix(y_true, y_pred, 
-                          normalize=False,
+                          normalize=True,
                           title=None,
                           cmap=plt.cm.Blues):
     """
@@ -585,6 +581,18 @@ def plot_confusion_matrix(y_true, y_pred,
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     return ax
+
+# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
+# ### Logistic Regression
+#
+#
+#   Logistic regression (LR) is a classification algorithm thats used to predict
+#   the probability of our categorical dependent variable.  The basics behind LR
+#   is that it takes the output of a linear model and crams it into a logistic
+#   function to give it a probablity of 0 to 1 (but never equaling 0 or 1). 
+#
+#
+
 #%%
 # # Initialize performance array to store model performances for various 
 # # models used in Lab 02.
@@ -879,15 +887,3 @@ plt.legend()
 plt.show()
 
 
-# %% 
-#%%
-
- plot_confusion_matrix(y_test, y_pred)
-#%%
-def column_destroy(colname, df):
-    df.drop(colname, axis = 1)
-
-#%%
-import xgboost
-
-#%%
