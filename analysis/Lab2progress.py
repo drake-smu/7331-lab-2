@@ -261,6 +261,7 @@ for i in secondary:
 # Masters, or a professional school. 
 
 # %% [markdown]
+#
 # <a id="understanding4"></a> <a href="#top">Back to Top</a>
 #  ### Section 2d: Interesting Visualizations
 #
@@ -689,28 +690,29 @@ plot_confusion_matrix(y_test, y_pred)
 # %% [markdown]
 #
 # Our initial run shows a decent accuracy with a basis of n_estimators at 100.
-# With an Accuracy of 84.7%. The F1 score
-# offered a slight improvement over that of the simple logistic regression,
-# which is visible in the slightly lowered amount of false negatives in the confusion matrix.
-# One clear issue with this model howeverm which causes it to be poorly performing, is the relatively high rate of false positives.
-#  Thats a pretty good initial run, but improvements
-# can be made.  Now we will implement a gridsearch over this random forrest to
+# With an Accuracy of 84.7%. The F1 score offered a slight improvement over that
+# of the simple logistic regression, which is visible in the slightly lowered
+# amount of false negatives in the confusion matrix. One clear issue with this
+# model howeverm which causes it to be poorly performing, is the relatively high
+# rate of false positives. Thats a pretty good initial run, but improvements can
+# be made.  Now we will implement a gridsearch over this random forrest to
 # extract optimal hyperparameters for tuning our random forest.  Our chosen
 # hyperparameter tuning features will be
 #
 # ** max_features **
-#   * Max Features looks to optimaze the number of features to
-#   consider when looking for a split
+#   * Max Features looks to optimaze the number of features to consider when
+#     looking for a split
 #
 #
 # ** n_estimators ** 
-#   * n_estimators sets the number of tree's in a forest.  Adding
-#   more tree's will increase your accuracy, but also make the training process
-#   very time costly. 
+#   * n_estimators sets the number of tree's in a forest.  Adding more tree's
+#     will increase your accuracy, but also make the training process very time
+#     costly. 
 #
 #
 # ** min_samples_leaf **
-#   * This is the minimum number of samples required for a leaf node to be created.  
+#   * This is the minimum number of samples required for a leaf node to be
+#     created.  
 #
 
 
@@ -1123,12 +1125,15 @@ performance.append({'algorithm':'Random ForestT2',
     'run time' : t})
 
 #%% [markdown]
-# This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
-# naive bayes next:
 #
+# This model has a slight improvement over the previous model, however it takes
+# much longer to run with a very minimal performance gain. Lets try out naive
+# bayes next:
+#
+# TODO - Summarize Che forest run.  As its our best model
 # <a id="modeling3_2_3"></a> <a href="#top">Back to Top</a>
 # ### Naive Bayes
-# 
+#
 #%%
 from sklearn.naive_bayes import GaussianNB
 
@@ -1190,7 +1195,8 @@ performance.append({'algorithm':'SGD T2',
     'run time' : t})
 
 
-#%% 
+#%% [markdown]
+#
 # TODO Maybe discuss this its basically just a SVM lol
 
 # %% [markdown]
@@ -1209,21 +1215,14 @@ performance.append({'algorithm':'SGD T2',
 # numer of estimators and a smaller minimum leaf node, it was able to yield a
 # better balance of precision and recall.  
 #
+# TODO - finish describing why best model
 #
 # %% 
 # Confidence interval
 tperf = pd.DataFrame(performance)
 tperf.round({'accuracy':5, 'f1 score':5})
+tperf
 
-from math import sqrt
-tnew = tperf
-z = 1.96
-
-for index_label, row_series in tnew.iterrows():
-   # For each row update the 'Bonus' value to it's double
-   tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
-   
-tnew
 
 
 # %% [markdown]
@@ -1246,8 +1245,17 @@ tnew
 #
 #
 # TODO - Statistical comparison here of all the models and whats better.  
-# TODO - Still need a way to get the confidence intervals
 
+# %% 
+from math import sqrt
+tnew = tperf
+z = 1.96
+
+for index_label, row_series in tnew.iterrows():
+   # For each row update the 'Bonus' value to it's double
+   tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
+   
+tnew
 # %% [markdown]
 #
 # <a id="modeling6"></a> <a href="#top">Back to Top</a>
