@@ -456,13 +456,16 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # scaling, etc.   Make sure you set the table or use case for what are the input
 # variables (input features X) and output variables (output features : Y).  
 #
-# TODO - INSERT EXPLANATION HERE FOR THE FINAL SHAPE OF THE DATASET BEFORE MODELING.
 # 
 # Our final dataset 
-# print('Number of observations in the training data:', len(X_train)
-# print('Number of observations in the test data:',len(X_test))
-
-
+print('Number of observations in the training data:', len(X_train))
+print('Number of observations in the test data:',len(X_test))
+#
+# For the final shape of our dataset with the split, we have 39073 instances and
+# 62 attributes.  The added attributes come from the one hot encoding that
+# splits the categories in to their own binary response for faster code
+# excecution.  
+#
 
 # %% [markdown]
 #
@@ -492,16 +495,13 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #   classifier prediction.
 #
 #
-#  Our chosen metric will be focusing on accuracy as our main metric of
-#  comparison.  We could analyze with F=1 scores, precision or recall.  Yet
-#  because the cost of a false prediction isn't necessarily high with our
-#  models, we settled on accuracy as our metric. Then we'll do a statistical
-#  comparison of those accuracies later in the notebook to compare which model
-#  performs the best. 
+#  We settled on accuracy and F-1 score as our two metrics for tracking
+#  performance. Accuracy provides a simple viewpoint into the models
+#  performance, while F1-Score gives us the ability to get a feel for the
+#  combination of precision and recall.   We will do a statistical analysis
+#  comparing these metrics later in the report. 
 #
-# TODO - Answer why accuracy is the best metric for our data TODO - Answer last
-# question: Why are the # measure(s) appropriate for analyzing
-#
+# TODO - May need to expand on metric selection.
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
 # ### Section 4.2 Part 2:
@@ -513,8 +513,10 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # should be using continuous training and testing sets across time.
 #
 # TODO - Explain test/training splits used. My explanation is.... lacking. 
-# We chose to use sklearns test/train split because we have a lot of data, so
-# therefore the simplest cross validation method will work for our purposes
+#
+# We chose to use sklearns test/train split at an 80/20 split.  Because we have
+# a lot of data and our variables are one hot encoded into binary.  We didn't do
+# a cross validation on our test/train split.  
 
 # %% [markdown] 
 #
@@ -601,7 +603,8 @@ def plot_confusion_matrix(y_true, y_pred,
 # Logistic regression (LR) is a classification algorithm thats used to predict
 # the probability of our categorical dependent variable.  The basics behind LR
 # is that it takes the output of a linear model and crams it into a logistic
-# function to give it a probablity of 0 to 1 (but never equaling 0 or 1). 
+# function to give it a probablity of 0 to 1 (but never equaling 0 or 1). We
+# will implement this model as our first for Task 1.
 #
 #
 
@@ -612,7 +615,7 @@ def plot_confusion_matrix(y_true, y_pred,
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
-
+from sklearn import metrics
 
 performance = []
 logClassifier = LogisticRegression()
@@ -638,7 +641,7 @@ print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
 
 #%% [markdown]
 #
-# Our Logistic regression with one hot encodied variables gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
+# Our Logistic regression gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
 # This is likely due to the models high amount of false negatives, as we can see from the confusion matrix, the model gave us nearly
 # as many false negatives as true positives. It was however very good at detecting true negatives.
 
@@ -790,9 +793,11 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 
-#%% [markdown]
-# Let us now tune the model even further, raising the number of estimators, as well as lowering the the minumum samples per leaf:
-
+#%% [markdown] 
+# 
+# Let us now tune the model even further, raising the number of
+# estimators, as well as lowering the the minumum samples per leaf:
+#
 
 
 clf =RandomForestClassifier(n_estimators=500,max_features=50,min_samples_leaf=10, n_jobs = -1)
@@ -823,9 +828,15 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 #%% [markdown]
-# Interestingly, this and a lot of the much cheaper models have very similar top peatures. Therefore, if the goal
-# of our analysis was to simply determine the important features to make a simple model, we would want to choose one of the cheaper models with similar results. However, if we are going for accuracy,
-# and low false positive and false negtive rates, this more expensive model is demonstrably superior
+#
+# Interestingly, this and a lot of the much cheaper models have very similar top
+# features. Therefore, if the goal of our analysis was to simply determine the
+# important features to make a simple model, we would want to choose one of the
+# cheaper models with similar results. However, if we are going for accuracy,
+# and low false positive and false negtive rates, this more expensive model is
+# demonstrably superior 
+# 
+#
 # %% [markdown]
 #
 # <a id="modeling3_1_3"></a> <a href="#top">Back to Top</a>
@@ -890,6 +901,7 @@ print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
 #%% [markdown]
 # Looking at the result of our knn test, it is not as well performing as the
 # random forest. It is slower, has lower accuracy, and has
+#
 # TODO - Input more explanation on this. 
 # 
 
@@ -941,6 +953,7 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 
+# TODO - Might nto want to reset the performance if we're still tracking everything
 performance = []
 
 logClassifier = LogisticRegression()
@@ -974,19 +987,24 @@ plot_confusion_matrix(y_test, y_pred)
 print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 
-#%% [markdown]
-# This model is very interesting. Although it has a high rate of false positives, it has an exceedingly low rate of false negatives.
-# Thus, it has a higher F1 score than it does accuracy. This model would be really useful in situations where 
-# where a false negative would be really bad but a false positive is fine
-# TODO come up with a dream scenario like this exists, it can be stupid we jsut need one
-# Let us now move on to the random forest. We will first run a grid search in parallel in order to find the proper parameters for this one.
-# TODO Explain this a bit better, just barf words here
+#%% [markdown] This model is very interesting. Although it has a high rate of
+# false positives, it has an exceedingly low rate of false negatives. Thus, it
+# has a higher F1 score than it does accuracy. This model would be really useful
+# in situations where where a false negative would be really bad but a false
+# positive is fine
 #
-# %% [markdown]
-# <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
+# TODO come up with a dream scenario like this exists, it can be stupid we jsut
+# need one
+#
+#  Let us now move on to the random forest. We will first run a grid search in
+# parallel in order to find the proper parameters for this one. 
+# 
+# TODO Explain why this a bit better, just barf words here
+#
+# %% [markdown] <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
 #
 # ### Random Forest
-# 
+#
 # %%
 #
 #
@@ -1064,7 +1082,9 @@ print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 print("Haive Bayes : F1 score",metrics.f1_score(y_test, y_pred))
 #%% [markdown]
+#
 # TODO tune something here, i think we can get this F1 score to 90%
+#
 # Next we will try out a stochastic gradient descent model:
 #
 # <a id="modeling3_2_4"></a> <a href="#top">Back to Top</a>
@@ -1082,8 +1102,8 @@ print("F1:",metrics.f1_score(y_test, y_pred))
 
 plot_confusion_matrix(y_test,pred_y,normalize=True)
 
-#%% Maybe discuss this its basically just a SVM lol
-# TODO
+#%% 
+# TODO Maybe discuss this its basically just a SVM lol
 
 # %% [markdown]
 #
@@ -1162,7 +1182,6 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 # parameters in a parallelized fashion and visualize the performances across
 # attributes. Which parameters are most significant for making a good model for
 # each classification algorithm?
-#
 #
 #
 # TODO - Talk about Che's parallelized search
