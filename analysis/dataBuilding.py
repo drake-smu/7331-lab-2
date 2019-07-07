@@ -45,6 +45,23 @@ cont_cols = [
     "capital_loss",
     "hours_per_week"]
 
+cat_cols2 = [
+    "workclass",
+    "marital_status", 
+    "occupation",
+    "race",
+    "relationship",
+    "education",
+    "native_country",
+    "income_bracket"]
+
+cont_cols2 = [
+    "age", 
+    "education_num",
+    "capital_gain",
+    "capital_loss",
+    "hours_per_week"]
+
 drop_cols =[]
 # drop_cols = [
 #     'fnlwgt',

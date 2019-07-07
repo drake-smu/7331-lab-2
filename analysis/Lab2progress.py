@@ -694,24 +694,33 @@ plt.show()
 
 performance.append(knn_scores[3])
 
-
+# %% [markdown]
+#
+# <a id="modeling3_2"></a> <a href="#top">Back to Top</a>
+# ### Task 2:  Classification of male or female based on attributes
+#
+#
+# For Task 2, we decided to evaluate the sex of a person in the Census based off
+# the attributes in the data.  This was chosen due to the binary outcome of that
+# column and it seemed like fun to predict.  On this task, we will classify the
+# gender of the person using XGBoost, LR, and KNN.  
 
 
 # %%
-# 
+#
 # Data Import for task 2
-# 
+#
 from analysis import dataBuilding as lab_db
 
-# Assign Default Vales for Columns
-cat_cols,cont_cols,drop_cols = lab_db.cat_cols,lab_db.cont_cols,lab_db.drop_cols
+# Assign Default Values for Columns
+cat_cols2,cont_cols2,drop_cols = lab_db.cat_cols2,lab_db.cont_cols2,lab_db.drop_cols
 
 # Drop Columns (if any)
 X,y = lab_db.build_df2(drop_cols)
 
 # Transform continuous cols to scaled versions
 # Transform categorical cols to Encoded Cols
-trans = lab_db.build_transform(cont_cols,cat_cols)
+trans = lab_db.build_transform(cont_cols2,cat_cols2)
 
 #%%
 # Execute Transforms specified above on all X data
@@ -726,7 +735,7 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 
 #%%
 # # Initialize performance array to store model performances for various 
-# # models used in Lab 02.
+# # 
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
