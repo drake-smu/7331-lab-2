@@ -1333,5 +1333,12 @@ tperf
 #
 
 #%%
+from math import sqrt
 tnew = tperf
+z = 1.96
+for index, row in tnew.head().iterrows():
+    tnew['confint'] = z * sqrt((row['accuracy'] * (1-row['accuracy']))/ row['observations']) 
+tnew
 
+
+#%%
