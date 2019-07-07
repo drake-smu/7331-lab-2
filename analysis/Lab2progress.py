@@ -673,6 +673,8 @@ for n in range(1,20,2):
     print(f'KNN : Training score - {train_score} -- Test score - {test_score}')
     knn_scores.append({'algorithm':'KNN', 'training_score':train_score,'testing_score':test_score})
 
+
+
 # %% [markdown]
 #
 # Visualizing the test vs training model scores helps us identify the the
@@ -693,6 +695,7 @@ plt.style.use('seaborn-pastel')
 plt.show()
 
 performance.append(knn_scores[3])
+# TODO - Input words about the KNN model results
 
 # %% [markdown]
 #
@@ -700,7 +703,7 @@ performance.append(knn_scores[3])
 # ### Task 2:  Classification of male or female based on attributes
 #
 #
-# For Task 2, we decided to evaluate the sex of a person in the Census based off
+# For Task 2, we decided to predict the gender of a person in the Census based off
 # the attributes in the data.  This was chosen due to the binary outcome of that
 # column and it seemed like fun to predict.  On this task, we will classify the
 # gender of the person using XGBoost, LR, and KNN.  
