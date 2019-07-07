@@ -1144,7 +1144,14 @@ performance.append({'algorithm':'SGD T2',
 # %% 
 
 tperf = pd.DataFrame(performance)
+tperf.round({'accuracy':5, 'f1 score':5})
+tperf.style.format({
+    'accuracy': '{:,.2%}'.format,
+    'f1 score': '{:,.2%}'.format
+})
 tperf
+
+# TODO - Not rounding to percentages.  Not quite sure why.  will come back
 
 # %% [markdown]
 # 
