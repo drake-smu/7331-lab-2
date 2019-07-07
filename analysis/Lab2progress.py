@@ -27,18 +27,18 @@ except:
 # * <a href="#preparation">Section 3: Data Preparation</a>
 #   * <a href="#preparation1">Section 3.1:Part 1</a>
 #   * <a href="#preparation2">Section 3.2:Part 2</a>
-# * <a href="#modeling">Section 4: Data Preparation</a>
+# * <a href="#modeling">Section 4: Modeling and Evaluation</a>
 #   * <a href="#modeling1">Section 4.1:Part 1</a>
 #   * <a href="#modeling2">Section 4.2:Part 2</a>
 #   * <a href="#modeling3">Section 4.3:Part 3</a>
 #       * <a href="#modeling3_1">Task 1:Classification 1</a>
-#           * <a href="#modeling3_1_1">Logistic Regression:</a>
+#           * <a href="#modeling3_1_1">Logistic Regression</a>
 #           * <a href="#modeling3_1_2">Random Forest</a>    
-#           * <a href="#modeling3_1_3">KNN:</a>
+#           * <a href="#modeling3_1_3">KNN</a>
 #       * <a href="#modeling3_2">Task 2:Classification 2</a>
-#           * <a href="#modeling3_2_1">Logistic Regression:</a>
-#           * <a href="#modeling3_2_2">Random Forest:</a>    
-#           * <a href="#modeling3_2_3">Naive Bayes:</a> 
+#           * <a href="#modeling3_2_1">Logistic Regression</a>
+#           * <a href="#modeling3_2_2">Random Forest</a>    
+#           * <a href="#modeling3_2_3">Naive Bayes</a> 
 #           * <a href="#modeling3_2_4">Stochastic Gradient Descent:</a> 
 #   * <a href="#modeling4">Section 4.4:Part 4</a>
 #   * <a href="#modeling5">Section 4.5:Part 5</a>
@@ -590,8 +590,11 @@ def plot_confusion_matrix(y_true, y_pred,
     fig.tight_layout()
     return ax
 
-# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
+
 # %% [markdown]
+#
+# <a id="modeling3_1_1"></a> <a href="#top">Back to Top</a>
+#
 # ### Logistic Regression
 #
 #
@@ -826,7 +829,7 @@ plt.show()
 # %% [markdown]
 #
 # <a id="modeling3_1_3"></a> <a href="#top">Back to Top</a>
-# ### KNN - K-nearest neighbors
+# ### KNN: K-nearest neighbors
 #
 # Next we have our KNN model using varying n_neighbor values. We will attempt to
 # identify the optimal number of neighbors that allows for highest degree of
@@ -884,18 +887,23 @@ plot_confusion_matrix(y_test, y_pred)
 print(f'KNN : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
 
-#%%
-# Looking at the result of our knn test, it is not as well performing as the random forest. It is slower, has lower accuracy, and has 
+#%% [markdown]
+# Looking at the result of our knn test, it is not as well performing as the
+# random forest. It is slower, has lower accuracy, and has
+# TODO - Input more explanation on this. 
+# 
+
 # %% [markdown]
 #
 # <a id="modeling3_2"></a> <a href="#top">Back to Top</a>
-# ### Task 2:  Classification of male or female based on attributes
+# ### Task 2:  Classification of male or female
 #
 #
-# For Task 2, we decided to predict the gender of a person in the Census based off
-# the attributes in the data.  This was chosen due to the binary outcome of that
-# column and it seemed like fun to predict.  On this task, we will classify the
-# gender of the person using XGBoost, LR, and KNN.  
+# For Task 2, we decided to predict the gender of a person in the Census based
+# off the attributes in the data.  This was chosen due to the binary outcome of
+# that column and it seemed like fun to predict.  On this task, we will classify
+# the gender of the person using Random Forest, Naive Bayes, and Stochastic
+# Gradient Descent
 #
 #
 
@@ -969,6 +977,7 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # TODO Explain this a bit better, just barf words here
 #
 # ### Random Forest
+#
 # %%
 # <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
 #
@@ -1033,8 +1042,9 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
 # naive bayes next:
 #
-# ### Naive Bayes
 # <a id="modeling3_2_3"></a> <a href="#top">Back to Top</a>
+# ### Naive Bayes
+# 
 #%%
 from sklearn.naive_bayes import GaussianNB
 model = GaussianNB()
@@ -1046,8 +1056,13 @@ print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("F1:",metrics.f1_score(y_test, y_pred))
 #%% [markdown]
 # TODO tune something here, i think we can get this F1 score to 90%
-# Mext we will try out a stochastic gradient descent model:
+# Next we will try out a stochastic gradient descent model:
+#
 # <a id="modeling3_2_4"></a> <a href="#top">Back to Top</a>
+#
+# ### Stochastic Gradient Descent
+#
+
 #%%
 from sklearn.linear_model import SGDClassifier
 clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=5000, n_jobs = -1)
