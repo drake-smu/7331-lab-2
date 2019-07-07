@@ -736,8 +736,6 @@ plot_confusion_matrix(y_test, y_pred)
 # print("Best",gris.best_score_)
 # print("params",gris.best_params_)
 
-# TODO - Input explanation of chosen parameters and how they effected output
-
 # %% 
 clf =RandomForestClassifier(n_estimators=50,max_features=5,min_samples_leaf=50)
 clf.fit(X_train,y_train)
@@ -935,6 +933,7 @@ performance.append({'algorithm':'KNNT1',
 
 
 #%% [markdown]
+#
 # Looking at the result of our knn test, it is not as well performing as the
 # random forest. It is slower, has lower accuracy, and has
 #
@@ -947,11 +946,11 @@ performance.append({'algorithm':'KNNT1',
 # ### Task 2:  Classification of male or female
 #
 #
-# For Task 2, we decided to predict the gender of a person in the Census based
-# off the attributes in the data.  This was chosen due to the binary outcome of
-# that column and it seemed like fun to predict.  On this task, we will classify
-# the gender of the person using Logistic Regression, Random Forest, Naive
-# Bayes, and Stochastic Gradient Descent
+# For Task 2, we decided to predict the gender of a person in the Census data.
+# This was chosen due to the binary outcome of that column and it seemed like
+# fun to predict.  On this task, we will classify the gender of the person using
+# Logistic Regression, Random Forest, Naive Bayes, and Stochastic Gradient
+# Descent
 #
 #
 
@@ -1030,7 +1029,9 @@ performance.append({'algorithm':'LogisticRegressionT2',
     'observations' : len(y_test),
     'run time' : t})
 
-#%% [markdown] This model is very interesting. Although it has a high rate of
+#%% [markdown] 
+# 
+# This model is very interesting. Although it has a high rate of
 # false positives, it has an exceedingly low rate of false negatives. Thus, it
 # has a higher F1 score than it does accuracy. This model would be really useful
 # in situations where where a false negative would be really bad but a false
@@ -1216,10 +1217,6 @@ performance.append({'algorithm':'SGD T2',
 
 tperf = pd.DataFrame(performance)
 tperf.round({'accuracy':5, 'f1 score':5})
-# tperf.style.format({
-#     'accuracy': '{:,.2%}'.format,
-#     'f1 score': '{:,.2%}'.format
-# })
 tperf
 
 # TODO - Not rounding to percentages.  Not quite sure why.  will come back
@@ -1336,9 +1333,30 @@ tperf
 from math import sqrt
 tnew = tperf
 z = 1.96
-for index, row in tnew.head().iterrows():
+for index, row in tnew.iterrows():
     tnew['confint'] = z * sqrt((row['accuracy'] * (1-row['accuracy']))/ row['observations']) 
 tnew
+
+
+#%%
+# for column in tnew:
+#     print(tnew[column])
+
+#%%
+from math import sqrt
+tnew = tperf
+z = 1.96
+
+for index_label, row_series in tnew.iterrows():
+   # For each row update the 'Bonus' value to it's double
+   tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
+
+
+
+
+
+
+
 
 
 #%%
