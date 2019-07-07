@@ -126,6 +126,7 @@ import seaborn as sns
 #import plotly.plotly as py
 #import plotly.graph_objs as go
 import matplotlib.pyplot as plt
+import timeit
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
@@ -616,6 +617,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn import metrics
 
+start = timeit.default_timer()
 performance = []
 logClassifier = LogisticRegression()
 
@@ -638,10 +640,13 @@ print(f'Logistic regression : accuracy score - {metrics.accuracy_score(y_test,y_
 
 print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
 
+stop = timeit.default_timer()
+t = stop - start
 performance.append({'algorithm':'LogisticRegressionT1',
     'accuracy':metrics.accuracy_score(y_test,y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 #%% [markdown]
 #
 # Our Logistic regression gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
@@ -669,6 +674,7 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
+
 
 clf =RandomForestClassifier(n_estimators=100)
 clf.fit(X_train,y_train)
@@ -800,17 +806,23 @@ plt.show()
 # estimators, as well as lowering the the minumum samples per leaf:
 #
 
+start = timeit.default_timer()
 
 clf =RandomForestClassifier(n_estimators=500,max_features=50,min_samples_leaf=10, n_jobs = -1)
 clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
+
+stop = timeit.default_timer()
+t = stop - start
+
 plot_confusion_matrix(y_test, y_pred)
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'Random ForestT1', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})})
+    'observations' : len(y_test),
+    'run time' : t})
 
 
 
@@ -853,6 +865,8 @@ plt.show()
 # set of data.
 #
 # %% 
+start = timeit.default_timer()
+
 knn_scores = []
 train_scores = []
 test_scores = []
@@ -899,6 +913,8 @@ knn = KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
 knn.fit(X_train,y_train)
 y_pred = knn.predict(X_test)
 
+stop = timeit.default_timer()
+t = stop - start
 
 plot_confusion_matrix(y_test, y_pred)
 print(f'KNN : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
@@ -906,7 +922,8 @@ print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'KNNT1', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 
 
 #%% [markdown]
@@ -964,6 +981,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 
+start = timeit.default_timer()
+
 logClassifier = LogisticRegression()
 
 #%% [markdown]
@@ -990,6 +1009,9 @@ print(f'LogisticRegression : Training score - {round(train_score,6)} - Test scor
 #%%
 y_pred = logClassifier.predict(X_test)
 
+stop = timeit.default_timer()
+t = stop - start
+
 plot_confusion_matrix(y_test, y_pred)
 print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
@@ -997,7 +1019,8 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'LogisticRegressionT2',
     'accuracy':metrics.accuracy_score(y_test,y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 
 #%% [markdown] This model is very interesting. Although it has a high rate of
 # false positives, it has an exceedingly low rate of false negatives. Thus, it
@@ -1025,6 +1048,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.datasets import make_classification
 from sklearn.model_selection import KFold
 from sklearn.model_selection import GridSearchCV
+
+start = timeit.default_timer()
+
 svcEstimator = RandomForestClassifier()
 cv = 3
 
@@ -1054,6 +1080,9 @@ clf.fit(X_train,y_train)
 
 y_pred=clf.predict(X_test)
 
+stop = timeit.default_timer()
+t = stop - start
+
 #Import scikit-learn metrics module for accuracy calculation
 from sklearn import metrics
 # Model Accuracy, how often is the classifier correct?
@@ -1081,7 +1110,8 @@ print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'Random ForestT2', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 
 #%% [markdown]
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
@@ -1092,9 +1122,16 @@ performance.append({'algorithm':'Random ForestT2',
 # 
 #%%
 from sklearn.naive_bayes import GaussianNB
+
+start = timeit.default_timer()
+
 model = GaussianNB()
 model.fit(X_train, y_train)
 pred_y = model.predict(X_test)
+
+stop = timeit.default_timer()
+t = stop - start
+
 plot_confusion_matrix(y_test,pred_y,normalize=True)
 print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, pred_y))
 
@@ -1103,7 +1140,8 @@ print("Naive Bayes : F1 score",metrics.f1_score(y_test, pred_y))
 performance.append({'algorithm':'Naive BayesT2', 
     'accuracy':metrics.accuracy_score(y_test, pred_y),
     'f1 score':metrics.f1_score(y_test,pred_y),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 
 #%% [markdown]
 #
@@ -1121,9 +1159,16 @@ performance.append({'algorithm':'Naive BayesT2',
 #
 #%%
 from sklearn.linear_model import SGDClassifier
+
+start = timeit.default_timer()
+
 clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=5000, n_jobs = -1)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
+
+stop = timeit.default_timer()
+t = stop - start
+
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("F1:",metrics.f1_score(y_test, y_pred))
 
@@ -1132,7 +1177,8 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 performance.append({'algorithm':'SGD T2', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
     'f1 score':metrics.f1_score(y_test,y_pred),
-    'observations' : len(y_test)})
+    'observations' : len(y_test),
+    'run time' : t})
 
 
 #%% 
@@ -1261,7 +1307,7 @@ tperf
 #
 #
 #
-# TODO - Insert madness about interested parties and why they would want this.
+# TODO - Madness inserted.  Feel free to add more. 
 #
 
 # %% [markdown]
@@ -1274,7 +1320,7 @@ tperf
 # attributes. Which parameters are most significant for making a good model for
 # each classification algorithm?
 #
-#
+# 
 # TODO - Talk about Che's parallelized search
 #
 
