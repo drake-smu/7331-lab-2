@@ -44,7 +44,7 @@ except:
 #   * <a href="#modeling5">Section 4.5:Part 5</a>
 #   * <a href="#modeling6">Section 4.6:Part 6</a>
 #   * <a href="#deployment">Section 4.7:Deployment</a>
-#   * <a href="#exceptional">Section 4.8:Exceptional Work 6</a>
+#   * <a href="#exceptional">Section 4.8:Exceptional Work</a>
 #
 
 #%% [markdown]
