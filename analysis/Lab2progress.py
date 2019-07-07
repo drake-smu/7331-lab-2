@@ -239,7 +239,7 @@ for i in secondary:
     print(df_census.groupby([i,'income_bracket'])[i].count().unstack(), end="\n\n")
 
 
-# %%
+# %% [markdown]
 # the categories that we've analyzed.  One category of capital_gain has some
 # very large numbers, but we might attribute that to massive investments made by
 # one individual.  After exploring further, alot of the values are 99,999. Which
@@ -407,8 +407,11 @@ plt.show()
 # This functions assigns a binary column to each category for every attribute.
 # Currently we've set it to ignore any unknown variables ie - missing value's.  
 # 
-# 
+# Our data cleaning and encoding scripts are shown in the next cell: 
 #
+
+# %%
+%load analysis/dataBuilding.py
 # %%
 # Data Import
 #
@@ -619,6 +622,19 @@ test_score = logClassifier.score(X_test,y_test)
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
 
+#%%
+y_pred = logClassifier.predict(X_test)
+plot_confusion_matrix(y_test,y_pred)
+print(f'Logistic regression : accuracy score - {metrics.accuracy_score(y_test,y_pred)}')
+
+print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
+
+#%% [markdown]
+#
+# Our Logistic regression with one hot encodied variables gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
+# This is likely due to the models high amount of false negatives, as we can see from the confusion matrix, the model gave us nearly
+# as many false negatives as true positives. It was however very good at detecting true negatives.
+
 # %% [markdown]
 #
 # <a id="modeling3_1_2"></a> <a href="#top">Back to Top</a>
@@ -646,13 +662,19 @@ clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+
+print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 #%%
 plot_confusion_matrix(y_test, y_pred)
 
 # %% [markdown]
 #
 # Our initial run shows a decent accuracy with a basis of n_estimators at 100.
-# With an Accuracy of 84.7%.  Thats a pretty good initial run, but improvements
+# With an Accuracy of 84.7%. The F1 score
+# offered a slight improvement over that of the simple logistic regression,
+# which is visible in the slightly lowered amount of false negatives in the confusion matrix.
+# One clear issue with this model howeverm which causes it to be poorly performing, is the relatively high rate of false positives.
+#  Thats a pretty good initial run, but improvements
 # can be made.  Now we will implement a gridsearch over this random forrest to
 # extract optimal hyperparameters for tuning our random forest.  Our chosen
 # hyperparameter tuning features will be
@@ -676,16 +698,16 @@ plot_confusion_matrix(y_test, y_pred)
 
 # %%
 
-# clf=RandomForestClassifier()
-# kf=KFold(n_splits=3)
-# max_features=np.array([1,2,3,4,5])
-# n_estimators=np.array([25,50,100,150,200])
-# min_samples_leaf=np.array([25,50,75,100])
-
-# # max_features=np.array([1,2,3,4,5])
-# # n_estimators=np.array([25,50,100,150,200])
-# # min_samples_leaf=np.array([25,50,75,100])
-
+#clf=RandomForestClassifier()
+#kf=KFold(n_splits=3)
+#max_features=np.array([1,2,3,4,5])
+#n_estimators=np.array([25,50,100,150,200])
+#min_samples_leaf=np.array([25,50,75,100])
+#
+#max_features=np.array([1,2,3,4,5])
+#n_estimators=np.array([25,50,100,150,200])
+#min_samples_leaf=np.array([25,50,75,100])
+#
 # param_grid=dict(n_estimators=n_estimators,max_features=max_features,min_samples_leaf=min_samples_leaf)
 # grid=GridSearchCV(estimator=clf,param_grid=param_grid,cv=kf)
 # gris=grid.fit(X_train,y_train)
@@ -701,6 +723,7 @@ clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
 
 
@@ -719,11 +742,82 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 
+#%% [markdown]
+# With these parameters, we have built improved our rate of false positives slightly, but drastically worsened our rate of false negatives:
+
 #%%
 
 plot_confusion_matrix(y_test, y_pred)
 
+#%% [markdown]
+# Let us continue adjusting the model.
+# First, let us adjust the number of features, and allow for basically any number of features to be included in the final model. 
+# This should help with the false negative problem we have been having:
+#%%
 
+
+clf =RandomForestClassifier(n_estimators=50,max_features=50,min_samples_leaf=50, n_jobs = -1)
+clf.fit(X_train,y_train)
+y_pred = clf.predict(X_test)
+plot_confusion_matrix(y_test, y_pred)
+print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
+performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
+
+
+## This gives you the name of the features that are important according to the RFC
+feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
+top_feat = feature_imp.nlargest(n=8)
+feature_imp
+#%% [markdown]
+# This is our best model so far. We have maintained the low rate of false positives, while also lowering the rate of false negatives to near
+# its default level. Let us check out this models most important features:
+# %%
+# Creating a bar plot
+sns.barplot(x=top_feat, y=top_feat.index)
+# Add labels to your graph
+plt.xlabel('Feature Importance Score')
+plt.ylabel('Features')
+plt.title("Visualizing Important Features")
+plt.legend()
+plt.show()
+
+#%% [markdown]
+# Let us now tune the model even further, raising the number of estimators, as well as lowering the the minumum samples per leaf:
+
+
+
+clf =RandomForestClassifier(n_estimators=500,max_features=50,min_samples_leaf=10, n_jobs = -1)
+clf.fit(X_train,y_train)
+y_pred = clf.predict(X_test)
+plot_confusion_matrix(y_test, y_pred)
+print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
+performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
+
+
+## This gives you the name of the features that are important according to the RFC
+feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
+top_feat = feature_imp.nlargest(n=8)
+feature_imp
+
+#%%
+# A significant improvement! We have managed to slightly improve the false negative rate of the original random forest,
+# while keepig our noticibeale false positive rate improvements. And look at that high F1 score! Lets check out what features this new
+# super-accurate model suggests:
+#%%
+
+sns.barplot(x=top_feat, y=top_feat.index)
+# Add labels to your graph
+plt.xlabel('Feature Importance Score')
+plt.ylabel('Features')
+plt.title("Visualizing Important Features")
+plt.legend()
+plt.show()
+#%% [markdown]
+# Interestingly, this and a lot of the much cheaper models have very similar top peatures. Therefore, if the goal
+# of our analysis was to simply determine the important features to make a simple model, we would want to choose one of the cheaper models with similar results. However, if we are going for accuracy,
+# and low false positive and false negtive rates, this more expensive model is demonstrably superior
 # %% [markdown]
 #
 # <a id="modeling3_1_3"></a> <a href="#top">Back to Top</a>
@@ -772,8 +866,21 @@ plt.style.use('seaborn-pastel')
 plt.show()
 
 performance.append(knn_scores[3])
-# TODO - Input words about the KNN model results
+#%% [markdown]
+# Let us take a look at the accuracy and F1 scores for our best KNN model, as well as a confusion matrix:
+#%%
 
+knn = KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
+knn.fit(X_train,y_train)
+y_pred = knn.predict(X_test)
+
+
+plot_confusion_matrix(y_test, y_pred)
+print(f'KNN : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
+
+#%%
+# Looking at the result of our knn test, it is not as well performing as the random forest. It is slower, has lower accuracy, and has 
 # %% [markdown]
 #
 # <a id="modeling3_2"></a> <a href="#top">Back to Top</a>
@@ -837,7 +944,22 @@ test_score = logClassifier.score(X_test,y_test)
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
 performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
 
+#%% [markdown]
+# let us now look at a confusion matrix, accuracy, and F1 score fore this model:
+#%%
+y_pred = logClassifier.predict(X_test)
 
+plot_confusion_matrix(y_test, y_pred)
+print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
+
+#%% [markdown]
+# This model is very interesting. Although it has a high rate of false positives, it has an exceedingly low rate of false negatives.
+# Thus, it has a higher F1 score than it does accuracy. This model would be really useful in situations where 
+# where a false negative would be really bad but a false positive is fine
+# TODO come up with a dream scenario like this exists, it can be stupid we jsut need one
+# Let us now move on to the random forest. We will first run a grid search in parallel in order to find the proper parameters for this one.
+# TODO Explain this a bit better, just barf words here
 # %%
 #Che Forrest
 from sklearn.ensemble import RandomForestClassifier
@@ -854,7 +976,7 @@ parameters = {'n_estimators': [100,250,500]
 #Create a grid search object using the
 from sklearn.model_selection import GridSearchCV
 svcGridSearch = GridSearchCV(estimator=svcEstimator
-                   , n_jobs=8 # jobs to run in parallel
+                   , n_jobs=-1 # jobs to run in parallel
                    , verbose=1 # low verbosity
                    , param_grid=parameters
                    , cv=cv # KFolds = 3
@@ -894,7 +1016,11 @@ plt.show()
 #%%
 
 plot_confusion_matrix(y_test, y_pred)
-#%%
+print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
+#%% [markdown]
+# This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
+# naive bayes next:
 
 #%%
 from sklearn.naive_bayes import GaussianNB
@@ -903,9 +1029,20 @@ model.fit(X_train, y_train)
 pred_y = model.predict(X_test)
 plot_confusion_matrix(y_test,pred_y,normalize=True)
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+
+print("F1:",metrics.f1_score(y_test, y_pred))
+#%% [markdown]
+# TODO tune something here, i think we can get this F1 score to 90%
+# Mext we will try out a stochastic gradient descent model:
 #%%
 from sklearn.linear_model import SGDClassifier
-clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=500)
+clf = SGDClassifier(loss = "hinge", penalty="elasticnet", max_iter=5000, n_jobs = -1)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("F1:",metrics.f1_score(y_test, y_pred))
+
+plot_confusion_matrix(y_test,pred_y,normalize=True)
+
+#%% Maybe discuss this its basically just a SVM lol
+# TODO
