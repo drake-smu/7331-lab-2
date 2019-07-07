@@ -717,7 +717,8 @@ plot_confusion_matrix(y_test, y_pred)
 
 # %%
 
-# Just commented out the grid search so it would run faster.  We can reinput at final run time. 
+# commented out the grid search so it would run faster.  We can reinput at final run time. 
+
 #clf=RandomForestClassifier()
 #kf=KFold(n_splits=3)
 #max_features=np.array([1,2,3,4,5])
@@ -762,17 +763,21 @@ plt.title("Visualizing Important Features")
 plt.legend()
 plt.show()
 
-#%% [markdown]
-# With these parameters, we have built improved our rate of false positives slightly, but drastically worsened our rate of false negatives:
-
+#%% [markdown] 
+# 
+# With these parameters, we have built improved our rate of false
+# positives slightly, but drastically worsened our rate of false negatives:
+#
 #%%
 
 plot_confusion_matrix(y_test, y_pred)
 
 #%% [markdown]
+#
 # Let us continue adjusting the model.
 # First, let us adjust the number of features, and allow for basically any number of features to be included in the final model. 
-# This should help with the false negative problem we have been having:
+# This should help with the false negative problem we have been having.
+#
 #%%
 
 
@@ -788,8 +793,11 @@ feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(
 top_feat = feature_imp.nlargest(n=8)
 feature_imp
 #%% [markdown]
-# This is our best model so far. We have maintained the low rate of false positives, while also lowering the rate of false negatives to near
-# its default level. Let us check out this models most important features:
+#
+# This is our best model so far. We have maintained the low rate of false
+# positives, while also lowering the rate of false negatives to near its default
+# level. Let us check out this models most important features:
+#
 # %%
 # Creating a bar plot
 sns.barplot(x=top_feat, y=top_feat.index)
@@ -1325,3 +1333,5 @@ tperf
 #
 
 #%%
+tnew = tperf
+
