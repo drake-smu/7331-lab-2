@@ -491,13 +491,15 @@ print('Number of observations in the test data:',len(X_test))
 #   classifier prediction.
 #
 #
-#  We settled on accuracy and F-1 score as our two metrics for tracking
-#  performance. Accuracy provides a simple viewpoint into the models
-#  performance, while F1-Score a balanced mean between precision and recall. Our
-#  initial analysis shows we still have a fair amount of false positives showing
-#  an uneven balanced class, which is why we will focus on F1 for this analysis.
-#  We will do a statistical analysis comparing these metrics later in the
-#  report. 
+# We settled on accuracy and F-1 score as our two metrics for tracking
+# performance. Accuracy provides a simple viewpoint into the models performance,
+# while F1-Score a balanced mean between precision and recall. Our initial
+# analysis shows we still have a fair amount of false positives showing an
+# uneven balanced class, which is why we will focus on F1 for this analysis. We
+# also will use a normalized confusion matrix in order to gain insight into how
+# each of our models are performing. Lastly, We will do a statistical analysis
+# comparing these metrics later in the report.
+#
 #
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
@@ -638,7 +640,8 @@ print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
 
 performance.append({'algorithm':'LogisticRegressionT1',
     'accuracy':metrics.accuracy_score(y_test,y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})
 #%% [markdown]
 #
 # Our Logistic regression gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
@@ -806,7 +809,8 @@ print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)
 print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'Random ForestT1', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})})
 
 
 
@@ -901,7 +905,8 @@ print(f'KNN : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
 performance.append({'algorithm':'KNNT1', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})
 
 
 #%% [markdown]
@@ -991,7 +996,8 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 
 performance.append({'algorithm':'LogisticRegressionT2',
     'accuracy':metrics.accuracy_score(y_test,y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})
 
 #%% [markdown] This model is very interesting. Although it has a high rate of
 # false positives, it has an exceedingly low rate of false negatives. Thus, it
@@ -1074,7 +1080,8 @@ print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 
 performance.append({'algorithm':'Random ForestT2', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})
 
 #%% [markdown]
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
@@ -1095,7 +1102,9 @@ print("Naive Bayes : F1 score",metrics.f1_score(y_test, pred_y))
 
 performance.append({'algorithm':'Naive BayesT2', 
     'accuracy':metrics.accuracy_score(y_test, pred_y),
-    'f1 score':metrics.f1_score(y_test,pred_y)})
+    'f1 score':metrics.f1_score(y_test,pred_y),
+    'observations' : len(y_test)})
+
 #%% [markdown]
 #
 # TODO tune something here, i think we can get this F1 score to 90%
@@ -1119,7 +1128,8 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 
 performance.append({'algorithm':'SGD T2', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
-    'f1 score':metrics.f1_score(y_test,y_pred)})
+    'f1 score':metrics.f1_score(y_test,y_pred),
+    'observations' : len(y_test)})
 
 
 #%% 
@@ -1135,23 +1145,30 @@ performance.append({'algorithm':'SGD T2',
 # they are interesting to someone that might use this model.
 #
 # Below are the results from our various model runs over both tasks.  Judging
-# from the intial results, it seems our Random forrests were the 
+# from the intial results, it seems our Random forrests were the best performers
+# on the accuracy side.  Yet the F1-score for Random ForestT1 was a bit lower.
+# Because we widened our parameter search on the second random forest to a great
+# numer of estimators and a smaller minimum leaf node, it was able to yield a
+# better balance of precision and recall. 
 #
 #
-# TODO - Pick which model we like the best! Explain with visuals 
-# TODO - probably random forest t1 is the best 
+# TODO - Pick which model we like the best! Explain with visuals TODO - probably
+# random forest t1 is the best 
 
 # %% 
 
 tperf = pd.DataFrame(performance)
 tperf.round({'accuracy':5, 'f1 score':5})
-tperf.style.format({
-    'accuracy': '{:,.2%}'.format,
-    'f1 score': '{:,.2%}'.format
-})
+# tperf.style.format({
+#     'accuracy': '{:,.2%}'.format,
+#     'f1 score': '{:,.2%}'.format
+# })
 tperf
 
 # TODO - Not rounding to percentages.  Not quite sure why.  will come back
+
+#Confidence Intervals. 
+
 
 # %% [markdown]
 # 
@@ -1168,6 +1185,11 @@ tperf
 # they are appropriate for your chosen method of validation as discussed in unit
 # 7 of the course.
 #
+# To compare our models, we'll first analyze the variance of each binomial
+# distribution.  Then, assuming a Gaussian Distribution, we can apply confidence
+# intervals to it to see if they overlap.  If the distribution does include zero
+# between the comparisons, then we know that we can reject the null hypothesis
+# that they are statistically different.  Lets find out. 
 #
 #
 # TODO - Statistical comparison here of all the models and whats better.  
