@@ -630,7 +630,7 @@ test_score = logClassifier.score(X_test,y_test)
 ## the data the model used for fit and test data. This helps 
 ## us identify overfitting.
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
-performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
+
 
 #%%
 y_pred = logClassifier.predict(X_test)
@@ -639,6 +639,9 @@ print(f'Logistic regression : accuracy score - {metrics.accuracy_score(y_test,y_
 
 print(f'Logistic regression : f1 score - {metrics.f1_score(y_test,y_pred)}')
 
+performance.append({'algorithm':'LogisticRegressionT1',
+    'accuracy':round(metrics.accuracy_score(y_test,y_pred)),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
 #%% [markdown]
 #
 # Our Logistic regression gives us an accuracy of 84.8%, however suffered from a lower F1 score of 0.639. 
@@ -735,8 +738,8 @@ y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
-performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
-
+# performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
+#  Commented out performance append because we just want to capture the last run.
 
 ## This gives you the name of the features that are important according to the RFC
 feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
@@ -773,8 +776,6 @@ y_pred = clf.predict(X_test)
 plot_confusion_matrix(y_test, y_pred)
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
-performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
-
 
 ## This gives you the name of the features that are important according to the RFC
 feature_imp = pd.Series(clf.feature_importances_,index=new_headers).sort_values(ascending=False)
@@ -805,8 +806,11 @@ clf.fit(X_train,y_train)
 y_pred = clf.predict(X_test)
 plot_confusion_matrix(y_test, y_pred)
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
-print(f'Random Forest : f1 score - {metrics.f1_score(y_test, y_pred)}')
-performance.append({'algorithm':'Random Forrest', 'testing_score':metrics.accuracy_score(y_test, y_pred)})
+print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
+performance.append({'algorithm':'Random ForestT1', 
+    'accuracy':metrics.accuracy_score(y_test, y_pred),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
+
 
 
 ## This gives you the name of the features that are important according to the RFC
@@ -884,9 +888,10 @@ for i,data in enumerate([train_scores,test_scores]):
 plt.style.use('seaborn-pastel')
 plt.show()
 
-performance.append(knn_scores[3])
 #%% [markdown]
-# Let us take a look at the accuracy and F1 scores for our best KNN model, as well as a confusion matrix:
+#
+# Let us take a look at the accuracy and F1 scores for our best KNN model, as
+# well as a confusion matrix:
 #%%
 
 knn = KNeighborsClassifier(n_neighbors=5,n_jobs=-1)
@@ -897,6 +902,10 @@ y_pred = knn.predict(X_test)
 plot_confusion_matrix(y_test, y_pred)
 print(f'KNN : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
+performance.append({'algorithm':'KNNT1', 
+    'accuracy':metrics.accuracy_score(y_test, y_pred),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
+
 
 #%% [markdown]
 # Looking at the result of our knn test, it is not as well performing as the
@@ -914,8 +923,8 @@ print(f'KNN : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # For Task 2, we decided to predict the gender of a person in the Census based
 # off the attributes in the data.  This was chosen due to the binary outcome of
 # that column and it seemed like fun to predict.  On this task, we will classify
-# the gender of the person using Random Forest, Naive Bayes, and Stochastic
-# Gradient Descent
+# the gender of the person using Logistic Regression, Random Forest, Naive
+# Bayes, and Stochastic Gradient Descent
 #
 #
 
@@ -953,9 +962,6 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 
-# TODO - Might nto want to reset the performance if we're still tracking everything
-performance = []
-
 logClassifier = LogisticRegression()
 
 #%% [markdown]
@@ -976,7 +982,6 @@ test_score = logClassifier.score(X_test,y_test)
 ## the data the model used for fit and test data. This helps 
 ## us identify overfitting.
 print(f'LogisticRegression : Training score - {round(train_score,6)} - Test score - {round(test_score,6)}')
-performance.append({'algorithm':'LogisticRegression', 'training_score':round(train_score,6), 'testing_score':round(test_score,6)})
 
 #%% [markdown]
 # let us now look at a confusion matrix, accuracy, and F1 score fore this model:
@@ -986,6 +991,10 @@ y_pred = logClassifier.predict(X_test)
 plot_confusion_matrix(y_test, y_pred)
 print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
+
+performance.append({'algorithm':'LogisticRegressionT2',
+    'accuracy':round(metrics.accuracy_score(y_test,y_pred)),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
 
 #%% [markdown] This model is very interesting. Although it has a high rate of
 # false positives, it has an exceedingly low rate of false negatives. Thus, it
@@ -1065,6 +1074,11 @@ plt.show()
 plot_confusion_matrix(y_test, y_pred)
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
+
+performance.append({'algorithm':'Random ForestT2', 
+    'accuracy':metrics.accuracy_score(y_test, y_pred),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
+
 #%% [markdown]
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
 # naive bayes next:
@@ -1081,6 +1095,10 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
 print("Haive Bayes : F1 score",metrics.f1_score(y_test, y_pred))
+
+performance.append({'algorithm':'Naive BayesT2', 
+    'accuracy':metrics.accuracy_score(y_test, y_pred),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
 #%% [markdown]
 #
 # TODO tune something here, i think we can get this F1 score to 90%
@@ -1101,6 +1119,11 @@ print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("F1:",metrics.f1_score(y_test, y_pred))
 
 plot_confusion_matrix(y_test,pred_y,normalize=True)
+
+performance.append({'algorithm':'SGD T2', 
+    'accuracy':metrics.accuracy_score(y_test, y_pred),
+    'f1 score':metrics.f1_score(y_test,y_pred)})
+
 
 #%% 
 # TODO Maybe discuss this its basically just a SVM lol
