@@ -945,9 +945,15 @@ performance = []
 
 logClassifier = LogisticRegression()
 
-#%%
-#
+#%% [markdown]
+# 
 # <a id="modeling3_2_1"></a> <a href="#top">Back to Top</a>
+# ### Logistic Regression
+#
+# TODO - Input intro for LR if we keep it. 
+#
+
+# %%
 ## Fit Logistic Classifier on training data
 logClassifier.fit(X_train,y_train)
 train_score = logClassifier.score(X_train,y_train)
@@ -976,10 +982,11 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # Let us now move on to the random forest. We will first run a grid search in parallel in order to find the proper parameters for this one.
 # TODO Explain this a bit better, just barf words here
 #
+# <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
 # ### Random Forest
 #
 # %%
-# <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
+#
 #
 #Che Forrest
 from sklearn.ensemble import RandomForestClassifier
