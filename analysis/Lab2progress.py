@@ -647,7 +647,7 @@ y_pred = clf.predict(X_test)
 
 print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
 #%%
- plot_confusion_matrix(y_test, y_pred)
+plot_confusion_matrix(y_test, y_pred)
 
 # %% [markdown]
 #
@@ -721,7 +721,7 @@ plt.show()
 
 #%%
 
- plot_confusion_matrix(y_test, y_pred)
+plot_confusion_matrix(y_test, y_pred)
 
 
 # %% [markdown]
@@ -893,7 +893,7 @@ plt.show()
 
 #%%
 
- plot_confusion_matrix(y_test, y_pred)
+plot_confusion_matrix(y_test, y_pred)
 #%%
 
 #%%
