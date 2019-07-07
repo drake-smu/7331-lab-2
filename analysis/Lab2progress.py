@@ -982,9 +982,11 @@ print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
 # Let us now move on to the random forest. We will first run a grid search in parallel in order to find the proper parameters for this one.
 # TODO Explain this a bit better, just barf words here
 #
+# %% [markdown]
 # <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
-# ### Random Forest
 #
+# ### Random Forest
+# 
 # %%
 #
 #
@@ -1043,8 +1045,8 @@ plt.show()
 #%%
 
 plot_confusion_matrix(y_test, y_pred)
-print(f'Logistic Regression : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
-print(f'Logistic Regression : f1 score - {metrics.f1_score(y_test, y_pred)}')
+print(f'Random Forest : Accuracy score - {metrics.accuracy_score(y_test, y_pred)}')
+print(f'Random Forest : F1 score - {metrics.f1_score(y_test, y_pred)}')
 #%% [markdown]
 # This model has a slight improvement over the previous model, however it takes much longer to run with a very minimal performance gain. Lets try out
 # naive bayes next:
@@ -1058,9 +1060,9 @@ model = GaussianNB()
 model.fit(X_train, y_train)
 pred_y = model.predict(X_test)
 plot_confusion_matrix(y_test,pred_y,normalize=True)
-print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
+print("Naive Bayes : Accuracy:",metrics.accuracy_score(y_test, y_pred))
 
-print("F1:",metrics.f1_score(y_test, y_pred))
+print("Haive Bayes : F1 score",metrics.f1_score(y_test, y_pred))
 #%% [markdown]
 # TODO tune something here, i think we can get this F1 score to 90%
 # Next we will try out a stochastic gradient descent model:
@@ -1139,6 +1141,14 @@ plot_confusion_matrix(y_test,pred_y,normalize=True)
 # model for interested parties? What other data should be collected? How often
 # would the model need to be updated, etc.? 
 #
+# One area where this model may prove useful is in collecting user information
+# from websites.  Given many websites have categorical descriptions of their
+# user data, it someone was say, in the healthcare sector and was attempting to
+# survey the general public on cardiovascular disease.   Some people may not
+# feel inclined to report their gender, but that information could prove useful
+# to the researcher in order to classify the person properly.  Using our
+# classification technique's, we could retrofit the model over their survey data
+# and begin to do prediction on that.   
 #
 # TODO - Insert madness about interested parties and why wthey would want this.
 #
