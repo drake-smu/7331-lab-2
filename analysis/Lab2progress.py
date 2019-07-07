@@ -492,8 +492,8 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 #  comparison of those accuracies later in the notebook to compare which model
 #  performs the best. 
 #
-# TODO - Answer why accuracy is the best metric for our data
-# TODO - Answer last question: Why are the # measure(s) appropriate for analyzing
+# TODO - Answer why accuracy is the best metric for our data TODO - Answer last
+# question: Why are the # measure(s) appropriate for analyzing
 #
 #
 # <a id="modeling2"></a> <a href="#top">Back to Top</a>
@@ -505,8 +505,9 @@ X_train, X_test, y_train, y_test = lab_db.split_df(X_processed,y,0.2)
 # method as appropriate. For example, if you are using time series data then you
 # should be using continuous training and testing sets across time.
 #
-# TODO - Explain test/training splits used. My explanation is.... lacking.
-# We chose to use sklearns test/train split function for 
+# TODO - Explain test/training splits used. My explanation is.... lacking. 
+# We chose to use sklearns test/train split because we have a lot of data, so
+# therefore the simplest cross validation method will work for our purposes
 
 # %% [markdown] 
 #
