@@ -1148,9 +1148,14 @@ performance.append({'algorithm':'Random ForestT2',
 # at a high computational cost
 #
 #
-# TODO - Summarize Che forest run.  As its our best model <a
 # id="modeling3_2_3"></a> <a href="#top">Back to Top</a>
 # ### Naive Bayes
+# The next model we will test is the naive bayes classifier.
+# In our case, it is highly likely that the naive bayes classifier is a well performing model
+# as a lot of our features can be assumed to be, in a perfect world, independent. However, some features may not be totally independent, as indicated
+# in our previous analysis, there may be a relationship between some of the features and income. This may lead to some issues with the model.
+# We will learn whether or not this is an issue or not in the next cell:
+
 #
 #%%
 from sklearn.naive_bayes import GaussianNB
@@ -1176,6 +1181,9 @@ performance.append({'algorithm':'Naive BayesT2',
     'run time' : t})
 
 #%% [markdown]
+# This model performed significantly better than the previous random forest in the fact of correctly identifying negatives, there were 
+# far fewer false positives. However, it performed much worse in the regard of identifying positives, with a much higher false negative rate. This 
+# again is likely due to some of the dependence between features.
 #
 # TODO tune something here, i think we can get this F1 score to 90%
 #
