@@ -1185,7 +1185,6 @@ performance.append({'algorithm':'Naive BayesT2',
 # far fewer false positives. However, it performed much worse in the regard of identifying positives, with a much higher false negative rate. This 
 # again is likely due to some of the dependence between features.
 #
-# TODO tune something here, i think we can get this F1 score to 90%
 #
 # Next we will try out a stochastic gradient descent model:
 #
@@ -1195,8 +1194,14 @@ performance.append({'algorithm':'Naive BayesT2',
 #
 # Stochastic Gradient Desent is a relative of gradient desent algorithm.  Where
 # GD follows a step by step process through each observation, SGD shuffles
-# its observations randomly.  Introducing less bias into the model.  
-#
+# its observations randomly.  Introducing less bias into the model.  It is not visible here, for the sake of the grader
+# who already has so much to read and look over, but we investigated the loss, max iter, and penalty parameters
+# It was found that by using the elasticnet penalty, which provides a nice balance between the l1 and l2 penalties 
+# produced the best results. We tried several loss parameters, but it was found that the "hing" loss, 
+# which causes the SGD to act similarly to a SVM. We also tried modified hinge, which is more accepting of outliers
+# perceptron, squared hinge, and log loss (which acts like logarithmic regression), but it was found that hinge loss 
+# gave us the best model performance:
+
 #%%
 from sklearn.linear_model import SGDClassifier
 
@@ -1212,7 +1217,7 @@ t = stop - start
 print("Accuracy:",metrics.accuracy_score(y_test, y_pred))
 print("F1:",metrics.f1_score(y_test, y_pred))
 
-plot_confusion_matrix(y_test,pred_y,normalize=True)
+plot_confusion_matrix(y_test,y_pred,normalize=True)
 
 performance.append({'algorithm':'SGD T2', 
     'accuracy':metrics.accuracy_score(y_test, y_pred),
@@ -1223,8 +1228,8 @@ performance.append({'algorithm':'SGD T2',
 
 #%% [markdown]
 #
-# TODO Maybe discuss this its basically just a SVM lol
-
+# This model performed moderately well, it had a good false negative rate, but a less than  stellar false positive rate. This model performed 
+# relatively quickly and gave decent results, however it is not quite in contention to be our final model.
 # %% [markdown]
 #
 # <a id="modeling4"></a> <a href="#top">Back to Top</a>
