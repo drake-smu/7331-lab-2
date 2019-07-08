@@ -947,7 +947,7 @@ performance.append({'algorithm':'KNNT1',
 # %% [markdown]
 #
 # <a id="modeling3_2"></a> <a href="#top">Back to Top</a>
-# ### Task 2:  Classification of male or female
+# ### Task 2:  Classification of gender
 #
 #
 # For Task 2, we decided to predict the gender of a person in the Census data.
@@ -1277,7 +1277,7 @@ tnew
 # %% [markdown]
 #
 # All of our models came out with an accuracy of 82-87%.  The highest accuracy
-# for Task 1 goes to random forestT1 with an accuracy of 87.2% [86.6%, 87.9%]
+# for Task 1 goes to random forestT1 with an accuracy of 87.2% (86.6%, 87.9%)
 # Due to our extra hyperparameter tuning and grid search, this allowed for the
 # greatest accuracy. Due to the fact none of its competing models lie with in
 # the Random ForestT1's interval, we can reject the null hypothesis that they
@@ -1285,14 +1285,14 @@ tnew
 # from the other models.  
 #
 # For Task 2, our best model was Logistic RegressionT2 with a classification
-# accuracy of 84.6% [83.9%, 85.3%].  Because the confidence intervals for our
+# accuracy of 84.6% (83.9%, 85.3%).  Because the confidence intervals for our
 # log regT2 model do overlap with the random forestT2 results, we can't say
 # there is a difference between the two.  Which gives us the discretion to
 # choose whichever model we feel is best.  As logistic regression took about 1
 # second to run and the random forest was nearly 200x that, we would select the
 # Log RegT2 function due to time and cost savings for anyone who wanted to
 # deploy that model.  
-
+#
 #
 # <a id="modeling6"></a> <a href="#top">Back to Top</a>
 # ### Section 4.6 Part 6:
@@ -1302,7 +1302,40 @@ tnew
 # the results and hypothesize about why certain attributes are more important
 # than others for a given classification task.
 #
+# #### Task 1:  Classification of making > or <= 50k
 #
+# For the first task of predicting a persons income bracket, our analysis found
+# that these were the top attributes contributing to the model.  Eearlier in our
+# analysis, We noticed the discrepency of married couple's having a better
+# financial advantage over unmarried, so we're glad to see that attribute on top
+# as it validates our hypothesis.  Capital gain is no surprise as those people
+# who are generating alot of capital tend to make more money, as well as those
+# with higher education levels.  Finally age and hours per week were slightly
+# lower than that but still important variables to target.  
+#
+#
+#
+# | Attribute             | Feature Importance |
+# |-----------------------|--------------------|
+# | x1_Married-civ-spouse | 0.283315           |
+# | capital_gain          | 0.169864           |
+# | education_num         | 0.168771           |
+# | age                   | 0.097187           |
+# | hours_per_week        | 0.054886           |
+# | capital_loss          | 0.052305           |
+# | x5_Husband            | 0.048574           |
+# | x2_Exec-managerial    | 0.014513           |
+# | x6_No Diploma         | 0.012112           |
+# | x5_Wife               | 0.011441           |
+# | x0_Private            | 0.007960           |
+
+# #### Task 2: Classification of gender
+#
+# For the second task of predicting gender, we see some slightly more obvious
+# results. The Husband and wife category are the biggest predictors as they
+# themselves are an indicator of gender, but in today's modern gender
+# definitions, this might not be as clear cut as 50 years ago.  Married, age,
+# and hours_per_week would be next 
 #
 # TODO - Bullshit on which attributes matter most for each task.  
 
@@ -1371,3 +1404,5 @@ tnew
 # 
 # TODO - Talk about Che's parallelized search
 #
+
+#%%
