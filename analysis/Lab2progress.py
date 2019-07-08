@@ -514,11 +514,11 @@ print('Number of observations in the test data:',len(X_test))
 # method as appropriate. For example, if you are using time series data then you
 # should be using continuous training and testing sets across time.
 #
-# TODO - Explain test/training splits used. My explanation is.... lacking. 
-#
-# We chose to use sklearns test/train split at an 80/20 split.  Because we have
-# a lot of data and our variables are one hot encoded into binary.  We didn't do
-# a cross validation on our test/train split.  
+# We chose in this analysis to use the train/test split method of cross validation. Due to 
+# our sufficiently large data set, we only need to do one fold. Because we are predicting on categorical data, a
+# and every row is unique, we just used simple sklearn sampling of our dataset to generate the two splits.
+# We can see the size of the splits in the cell above
+
 
 # %% [markdown] 
 #
@@ -938,9 +938,9 @@ performance.append({'algorithm':'KNNT1',
 #%% [markdown]
 #
 # Looking at the result of our knn test, it is not as well performing as the
-# random forest. It is slower, has lower accuracy, and has
+# random forest. It is slower, has lower accuracy, and has an overall low  f1 score. This is likely due to the relatively high rate of false positives.
+# 
 #
-# TODO - Input more explanation on this. 
 # 
 
 # %% [markdown]
@@ -1000,8 +1000,9 @@ logClassifier = LogisticRegression()
 # <a id="modeling3_2_1"></a> <a href="#top">Back to Top</a>
 # ### Logistic Regression
 #
-# TODO - Input intro for LR if we keep it. 
-#
+# First, we will be looking at a simple logistic regression model in order to predict whether a person, given demographic circumstances, is a 
+# man or a woman. We are starting with logistic regression because it is fast, simple, and if it performs equally well as other models it is likely 
+# the best model to choose, due to its cheapness and simplicity. Therefore it will act as a standard to compare to the other models
 
 # %%
 ## Fit Logistic Classifier on training data
@@ -1040,13 +1041,14 @@ performance.append({'algorithm':'LogisticRegressionT2',
 # in situations where where a false negative would be really bad but a false
 # positive is fine
 #
-# TODO come up with a dream scenario like this exists, it can be stupid we jsut
-# need one
 #
 #  Let us now move on to the random forest. We will first run a grid search in
-# parallel in order to find the proper parameters for this one. 
+# parallel in order to find the proper parameters for this one. The random forest, while 
+# a more expensive model than logistic regression, has a chance to not only give us a better preditcion/classification than 
+# logisrtic regression, but also has a wonderful built in tool for viewing which estimators are the most important.
+# This tool can be useful in deciding on further models, as well as just looking for which variables are most important and deserve a closer
+# look or more data collection for future use.
 # 
-# TODO Explain why this a bit better, just barf words here
 #
 # %% [markdown] <a id="modeling3_2_2"></a> <a href="#top">Back to Top</a>
 #
@@ -1126,10 +1128,13 @@ performance.append({'algorithm':'Random ForestT2',
     'run time' : t})
 
 #%% [markdown]
-#
-# This model has a slight improvement over the previous model, however it takes
-# much longer to run with a very minimal performance gain. Lets try out naive
-# bayes next:
+# 
+# To create this model, we first ran a grid search in parallel to tune the hyperparameters to optimal values. We then took the best model and 
+# delved deeper into it. This model boasts a very high accuracy, high F1 score, and a very low false negative (as well as very low false positive) rate.
+# While improving accuracy, this model is highly computationally expensive. Therefore, this model would be used only in situations when accuracy is crucial.
+# In situations in which we just want to find the best predictors, or just quickly get a decent model, any of the above models would suffice, however this model
+# is extremely accurate, at the cost of relatively extreme computation time. The grid search is a powerful tool which can be used to tune models to perfection
+# at a high computational cost
 #
 # TODO - Summarize Che forest run.  As its our best model
 # <a id="modeling3_2_3"></a> <a href="#top">Back to Top</a>
