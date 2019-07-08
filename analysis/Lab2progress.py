@@ -1266,14 +1266,21 @@ tperf
 from math import sqrt
 tnew = tperf
 z = 1.96
+# tnew['confint'] = ""
+# tnew['upperinterval'] = float(0)
+# tnew['lowerinterval'] = float(0)
 
 for index_label, row_series in tnew.iterrows():
-
    tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
+
+for index_label, row_series in tnew.iterrows():
    tnew.at[index_label , 'upperinterval'] = row_series['accuracy'] + row_series['confint']
    tnew.at[index_label , 'lowerinterval'] = row_series['accuracy'] - row_series['confint']
 
 tnew
+
+# %%
+tnew.dtypes
 # %% [markdown]
 #
 # All of our models came out with an accuracy of 82-87%.  The highest accuracy
@@ -1305,10 +1312,10 @@ tnew
 # #### Task 1:  Classification of making > or <= 50k
 #
 # For the first task of predicting a persons income bracket, our analysis found
-# that these were the top attributes contributing to the model.  Eearlier in our
+# that these were the top attributes contributing to the model.  Earlier in our
 # analysis, We noticed the discrepency of married couple's having a better
 # financial advantage over unmarried, so we're glad to see that attribute on top
-# as it validates our hypothesis.  Capital gain is no surprise as those people
+# as it validates that hypothesis.  Capital gain is no surprise as those people
 # who are generating alot of capital tend to make more money, as well as those
 # with higher education levels.  Finally age and hours per week were slightly
 # lower than that but still important variables to target.  
@@ -1335,9 +1342,23 @@ tnew
 # results. The Husband and wife category are the biggest predictors as they
 # themselves are an indicator of gender, but in today's modern gender
 # definitions, this might not be as clear cut as 50 years ago.  Married, age,
-# and hours_per_week would be next 
-#
-# TODO - Bullshit on which attributes matter most for each task.  
+# and hours_per_week would be next.  As these are also indicators of a single
+# income family home where one parent may work and the other may not.  I'm not
+# surprised to see adm-clerical as an important factor either as traditionally
+# most administrative work falls under the female category. Craft-repair also
+# falls into a sterotype of a female driven category so it too isn't suprising
+# to see as a top influence.  
+# 
+# | Attribute             | Feature Importance |
+# |-----------------------|--------------------|
+# | x4_Husband            | 0.204476           |
+# | X1_Married-civ-spouse | 0.087534           |
+# | age                   | 0.086080           |
+# | x4_Wife               | 0.086058           |
+# | hours_per_week        | 0.072582           |
+# | x4_Unmarried          | 0.048385           |
+# | x2_Craft-repair       | 0.039049           |
+# | x2_Adm-clerical       | 0.036414           |
 
 
 # %% [markdown]
@@ -1388,7 +1409,6 @@ tnew
 #
 #
 #
-# TODO - Madness inserted.  Feel free to add more. 
 #
 
 # %% [markdown]
