@@ -494,13 +494,14 @@ print('Number of observations in the test data:',len(X_test))
 #
 #
 # We settled on accuracy and F-1 score as our two metrics for tracking
-# performance. Accuracy provides a simple viewpoint into the models performance,
-# while F1-Score a balanced mean between precision and recall. Our initial
-# analysis shows we still have a fair amount of false positives showing an
-# uneven balanced class, which is why we will focus on F1 for this analysis. We
-# also will use a normalized confusion matrix in order to gain insight into how
-# each of our models are performing. Lastly, We will do a statistical analysis
-# comparing these metrics later in the report.
+# performance. Accuracy is a desired metric for classification as you're always
+# trying to improve your models ability to predict. F1-Score a balanced
+# mean between precision and recall. Our initial analysis shows we still have a
+# fair amount of false positives showing an uneven balanced class, which is why
+# we will focus on F1 as well for this analysis. We also will use a normalized
+# confusion matrix in order to gain insight into how each of our models are
+# performing. Lastly, We will do a statistical analysis comparing these metrics
+# later in the report.
 #
 #
 #
@@ -1213,7 +1214,7 @@ performance.append({'algorithm':'SGD T2',
 # on the accuracy side.  Yet the F1-score for Random ForestT1 was a bit lower.
 # Because we widened our parameter search on the second random forest to a greater
 # numer of estimators and a smaller minimum leaf node, it was able to yield a
-# better balance of precision and recall.  
+# better accuracy due to increased tree creation. 
 #
 # TODO - finish describing why best model
 #
@@ -1238,13 +1239,11 @@ tperf
 # 7 of the course.
 #
 # To compare our models, we'll first analyze the variance of each binomial
-# distribution.  Then, assuming a Gaussian Distribution, we can apply confidence
-# intervals to it to see if they overlap.  If the distribution does include zero
-# between the comparisons, then we know that we can reject the null hypothesis
-# that they are statistically different.  Lets find out. 
+# proportion confidence interval.  Then, assuming a Gaussian Distribution, we
+# can apply confidence intervals to the classification accuracy.  This will give
+# us our confidence intervals for accuracy.
 #
-#
-# TODO - Statistical comparison here of all the models and whats better.  
+
 
 # %% 
 from math import sqrt
@@ -1252,11 +1251,31 @@ tnew = tperf
 z = 1.96
 
 for index_label, row_series in tnew.iterrows():
-   # For each row update the 'Bonus' value to it's double
+
    tnew.at[index_label , 'confint'] = z * sqrt((row_series['accuracy'] * (1-row_series['accuracy']))/ row_series['observations'])
-   
+   tnew.at[index_label , 'upperinterval'] = row_series['accuracy'] + row_series['confint']
+   tnew.at[index_label , 'lowerinterval'] = row_series['accuracy'] - row_series['confint']
+
 tnew
 # %% [markdown]
+#
+# All of our models came out with an accuracy of 82-87%.  The highest accuracy
+# for Task 1 goes to random forestT1 with an accuracy of 87.2% [86.6%, 87.9%]
+# Due to our extra hyperparameter tuning and grid search, this allowed for the
+# greatest accuracy. Due to the fact none of its competing models lie with in
+# the Random ForestT1's interval, we can reject the null hypothesis that they
+# are the same and have 95% confidence that they are statistically different
+# from the other models.  
+#
+# For Task 2, our best model was Logistic RegressionT2 with a classification
+# accuracy of 84.6% [83.9%, 85.3%].  Because the confidence intervals for our
+# log regT2 model do overlap with the random forestT2 results, we can't say
+# there is a difference between the two.  Which gives us the discretion to
+# choose whichever model we feel is best.  As logistic regression took about 1
+# second to run and the random forest was nearly 200x that, we would select the
+# Log RegT2 function due to time and cost savings for anyone who wanted to
+# deploy that model.  
+
 #
 # <a id="modeling6"></a> <a href="#top">Back to Top</a>
 # ### Section 4.6 Part 6:
