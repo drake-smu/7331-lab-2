@@ -1430,7 +1430,7 @@ tnew.dtypes
 # each classification algorithm?
 #
 # 
-# TODO - Talk about Che's parallelized search
+# TODO - Talk about Che's parallelized search.  for fun
 #
 
 #%%
