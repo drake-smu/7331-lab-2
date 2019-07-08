@@ -1429,8 +1429,38 @@ tnew.dtypes
 # attributes. Which parameters are most significant for making a good model for
 # each classification algorithm?
 #
-# 
-# TODO - Talk about Che's parallelized search.  for fun
+#
+# We implemented a grid search in both of our random forests.   Grid search
+# itself is a parameter optimizing function that comes along with sklearn. It
+# searches and impleemnts a fit and score method.  Where each search is done by
+# an array of parameters that you feed into it.  In ours, we varied the number
+# of n_estimators and the max depth of the tree for Random ForestT2 model.  We
+# increased our n_estimators to allow for more tree's in our forest.  We also
+# set the max_depth to allow for greater depth in each tree and found the
+# results to be more accurate without a drop off in F1-score as we saw in the
+# Random ForestT1 model.  We also used a cross validation of 3 folds due to time
+# savings when running the search. Its also a recommended value for larger
+# datasets, which we have.  
 #
 
-#%%
+
+#%% [markdown]
+# svcEstimator = RandomForestClassifier()
+# cv = 3
+
+# #compare various values of C, kernels (rbf vs linear vs poly),decision_function_shape (ovo vs ovr)
+# parameters = {'n_estimators': [100,250,500]
+#             , 'max_depth': [5,25,50,100]}
+
+# #Create a grid search object using the
+# from sklearn.model_selection import GridSearchCV
+# svcGridSearch = GridSearchCV(estimator=svcEstimator
+#                    , n_jobs=-1 # jobs to run in parallel
+#                    , verbose=1 # low verbosity
+#                    , param_grid=parameters
+#                    , cv=cv # KFolds = 3
+#                    , scoring='accuracy')
+
+# svcGridSearch.fit(X_train, y_train)
+# print("The best estimator based on F1 is ", svcGridSearch.best_estimator_)
+# best_rf = svcGridSearch.best_estimator_
